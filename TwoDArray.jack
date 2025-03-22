@@ -1,0 +1,77 @@
+class TwoDArray {
+    field Array mainArray; // Основной массив
+    field int rows, cols; // Количество строк и столбцов
+    constructor TwoDArray new(int Arows, int Acols) {
+        var int i, j;
+
+        let rows = Arows; // Количество строк yi
+        let cols = Acols; // Количество столбцов xi
+        let mainArray = Array.new(cols*rows); // Создаем массив
+        while (i< cols) { // Создаем массив
+            let i = i + 1;
+            while (j < rows) { // Создаем массив
+                let j = j + 1;
+                let mainArray[i*cols+(j)] = -1;
+            }
+            let j = 0; // Сбрасываем индекс строки
+        }
+        let i = 0; // Сбрасываем индекс столбца
+
+        // Теперь mainArray заполнен значениями
+        return this;
+    }
+
+    method void set(int x, int y, int value) {
+        var int index;
+        let index = x*cols+y;
+        let mainArray[index] = value;
+        return;
+    }
+
+    method int get(int x, int y) {
+        var int index;
+        let index = x*cols+y;
+        return mainArray[index];
+    }
+
+    method int findWinner()
+    {
+        var int i, j, k, l, count;
+        // Проверяем горизонтальные линии
+        let i = 0;
+        while (i < rows) {
+            let j = 0;
+            while (j < cols-3) {
+                if(isSimilar(i,j,i+4,j)) {
+                    return mainArray[i*cols+j];
+                }
+                let j = j + 1;
+            }
+            let i = i + 1;
+        }
+        return -1;
+    }
+
+
+    method boolean isSimilar(int x1, int y1, int x2, int y2) {
+        if(y1=y2) {
+            while(x1<x2) {
+                if(~(mainArray[x1*cols+y1] = mainArray[x2*cols+y1])) {
+                    return false;
+                }
+                let x1 = x1 + 1;
+            }
+            return true;
+        }
+        if(x1=x2) {
+            while(y1<y2) {
+                if(~(mainArray[x1*cols+y1] = mainArray[x1*cols+y2])) {
+                    return false;
+                }
+                let y1 = y1 + 1;
+            }
+            return true;
+        }
+        return false;
+    }
+}

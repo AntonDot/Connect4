@@ -1,0 +1,112 @@
+class ConnectGame {
+    field Array columnsCount;  
+    field TwoDArray board;  
+    field int currentPlayer; // Текущий игрок (0 = черный, 1 = белый)
+    field int rows, cols;   // Размеры поля (6x7)
+    field boolean exit;     // Флаг выхода из игры
+
+    constructor ConnectGame new() {
+        let rows = 6;        // 6 рядов
+        let cols = 7;        // 7 столбцов
+        let columnsCount = Array.new(cols); // Массив для хранения количества шаров в каждом столбце
+        let exit = false;    // Флаг выхода из игры
+        let board = TwoDArray.new(rows, cols); // Создаем двумерный массив для хранения игрового поля
+        let currentPlayer = 0; // Черный игрок начинает
+        do Screen.clearScreen(); // Очищаем экран
+        return this;
+    }
+
+    method void drawBoard() {
+        var int x, y, xi, yi;
+
+        do Screen.setColor(true);  // Цвет фона (black)
+        do Screen.drawRectangle(129, 35,  379, 250);
+        // Рисуем игровое поле
+        let y = 40;  // Начальная вертикальная позиция (по Y)
+        let xi = 0;  // Индекс клетки по горизонтали
+        let yi = 0;  // Индекс клетки по вертикали
+        // Пройдем по всем рядам
+        while (yi < 6) {  
+            let x = 134;  // Начальная горизонтальная позиция (по X)
+            
+            // Пройдем по всем столбцам
+            while (xi < 7) {  
+                let xi=xi+1;
+                do Screen.setColor(false);  // Цвет фона (white)
+                do Screen.drawRectangle(x, y, x + 30, y + 30);  // Отрисовываем клетку
+                let x = x + 35;  // Сдвигаем на 35 пикселей вправо (для следующего столбца)
+            }
+            let xi = 0;  // Сбрасываем индекс столбца
+            let yi = yi + 1;  // Переходим к следующему ряду
+            let y = y + 35;  // Сдвигаем вниз на 35 пикселей (для следующего ряда)
+        }
+        return;
+    }
+
+    method void run() {
+        var char key;    // Клавиша, нажатая игроком
+        var Ball ball; // Declare the ball object
+        do drawBoard();  // Рисуем игровое поле
+        let ball = Ball.new(134,5,this,0); // Initialize the ball object
+        while(~exit) {
+            while (~exit) {
+                // waits for a key to be pressed.
+            
+                while ((key = 0) & (~exit)) {
+                    let key = Keyboard.keyPressed();               
+                }
+                if (key = 130) { 
+                    do ball.move(1); 
+                    let key = 0;
+                    }//left
+	            else {
+	                if (key = 132) { 
+                        do ball.move(2); 
+                        let key = 0;
+                    }//right
+		            else {
+                        if (key = 133) { 
+                            do ball.move(3);
+                            let key = 0;
+                            if(columnsCount[ball.getXi()] < 6){
+                            let columnsCount[ball.getXi()] = columnsCount[ball.getXi()] + 1;
+
+                            do board.set( ball.getXi(), columnsCount[ball.getXi()], currentPlayer);
+                            if(~(board.findWinner() = -1)) {
+                                let exit = true;
+                                do Screen.clearScreen();
+                            }
+                            do ball.dispose();
+                            let currentPlayer = 1 - currentPlayer;
+                            let ball = Ball.new(134,5, this,currentPlayer);
+                            }
+                        
+                        
+                     }//down
+                        else {
+                            if (key = 140) { let exit = true; 
+                                let key = 0;
+                            }
+                       }
+		           }
+                }
+                do Sys.wait(100); // Wait for 100 ms
+            }
+        }
+	    if (exit) {
+            do Output.moveCursor(10,27);
+	        do Output.printString("Game Over");
+	    }
+            
+        return;
+    }
+
+    method int getCountInColumn(int column) {
+        return columnsCount[column];
+    }
+
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+}

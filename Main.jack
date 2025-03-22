@@ -1,0 +1,10 @@
+class Main {
+    /** Initializes a Connect4 game and starts running it. */
+    function void main() {
+        var ConnectGame game;
+        let game = ConnectGame.new(); // Correctly initialize the game instance
+        do game.run();               // Start the game
+        do game.dispose();           // Clean up resources
+        return;
+    }
+}
