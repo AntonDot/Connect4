@@ -69,15 +69,19 @@ class ConnectGame {
                             do ball.move(3);
                             let key = 0;
                             if(columnsCount[ball.getXi()] < 6){
-                            let columnsCount[ball.getXi()] = columnsCount[ball.getXi()] + 1;
+                            
 
                             do board.set( ball.getXi(), columnsCount[ball.getXi()], currentPlayer);
-                            if(~(board.findWinner() = -1)) {
+                            let columnsCount[ball.getXi()] = columnsCount[ball.getXi()] + 1;
+                            if(~(board.findWinner() = 2)) {
                                 let exit = true;
-                                do Screen.clearScreen();
+                                
                             }
                             do ball.dispose();
                             let currentPlayer = 1 - currentPlayer;
+                            if(columnsCount[0]+columnsCount[1]+columnsCount[2]+columnsCount[3]+columnsCount[4]+columnsCount[5]+columnsCount[6] = 42) {
+                                let exit = true;
+                            }
                             let ball = Ball.new(134,5, this,currentPlayer);
                             }
                         
@@ -94,8 +98,24 @@ class ConnectGame {
             }
         }
 	    if (exit) {
-            do Output.moveCursor(10,27);
-	        do Output.printString("Game Over");
+            do Screen.clearScreen();
+            if(board.findWinner() = 2) {
+                do Output.printString("It's a draw");
+                do Output.moveCursor(10,27);
+                do Output.printString("Game Over");
+            }
+            else {
+                do Output.printString("Player ");
+                if(board.findWinner() = 0) {
+                    do Output.printString("Black");
+                }
+                else {
+                    do Output.printString("White");
+                }
+                do Output.printString(" wins");
+                do Output.moveCursor(10,27);
+	            do Output.printString("Game Over");
+            }
 	    }
             
         return;
