@@ -1,0 +1,737 @@
+function TwoDArray.new 2
+push constant 3
+call Memory.alloc 1
+pop pointer 0
+push argument 0
+pop this 1
+push argument 1
+pop this 2
+push this 2
+push this 1
+call Math.multiply 2
+call Array.new 1
+pop this 0
+label WHILE_EXP0
+push local 0
+push this 2
+lt
+not
+if-goto WHILE_END0
+label WHILE_EXP1
+push local 1
+push this 1
+lt
+not
+if-goto WHILE_END1
+push local 0
+push this 2
+call Math.multiply 2
+push local 1
+add
+push this 0
+add
+push constant 2
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push local 1
+push constant 1
+add
+pop local 1
+goto WHILE_EXP1
+label WHILE_END1
+push local 0
+push constant 1
+add
+pop local 0
+push constant 0
+pop local 1
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+pop local 0
+push pointer 0
+return
+function TwoDArray.set 1
+push argument 0
+pop pointer 0
+push argument 1
+push this 2
+call Math.multiply 2
+push argument 2
+add
+pop local 0
+push local 0
+push this 0
+add
+push argument 3
+pop temp 0
+pop pointer 1
+push temp 0
+pop that 0
+push constant 0
+return
+function TwoDArray.get 1
+push argument 0
+pop pointer 0
+push argument 1
+push this 2
+call Math.multiply 2
+push argument 2
+add
+pop local 0
+push local 0
+push this 0
+add
+pop pointer 1
+push that 0
+return
+function TwoDArray.findWinner 2
+push argument 0
+pop pointer 0
+label WHILE_EXP0
+push local 0
+push this 2
+lt
+not
+if-goto WHILE_END0
+push pointer 0
+push local 0
+push local 1
+push local 0
+push local 1
+push constant 3
+add
+call TwoDArray.isSimilar 5
+push local 0
+push this 2
+call Math.multiply 2
+push local 1
+add
+push this 0
+add
+pop pointer 1
+push that 0
+push constant 2
+eq
+not
+and
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+push local 0
+push this 2
+call Math.multiply 2
+push local 1
+add
+push this 0
+add
+pop pointer 1
+push that 0
+return
+label IF_FALSE0
+push pointer 0
+push local 0
+push local 1
+push constant 1
+add
+push local 0
+push local 1
+push constant 1
+add
+push constant 3
+add
+call TwoDArray.isSimilar 5
+push local 0
+push this 2
+call Math.multiply 2
+push local 1
+add
+push constant 1
+add
+push this 0
+add
+pop pointer 1
+push that 0
+push constant 2
+eq
+not
+and
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push local 0
+push this 2
+call Math.multiply 2
+push local 1
+add
+push constant 1
+add
+push this 0
+add
+pop pointer 1
+push that 0
+return
+label IF_FALSE1
+push pointer 0
+push local 0
+push local 1
+push constant 2
+add
+push local 0
+push local 1
+push constant 2
+add
+push constant 3
+add
+call TwoDArray.isSimilar 5
+push local 0
+push this 2
+call Math.multiply 2
+push local 1
+add
+push constant 2
+add
+push this 0
+add
+pop pointer 1
+push that 0
+push constant 2
+eq
+not
+and
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+push local 0
+push this 2
+call Math.multiply 2
+push local 1
+add
+push constant 2
+add
+push this 0
+add
+pop pointer 1
+push that 0
+return
+label IF_FALSE2
+push local 0
+push constant 1
+add
+pop local 0
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+pop local 0
+push constant 0
+pop local 1
+label WHILE_EXP1
+push local 1
+push this 1
+lt
+not
+if-goto WHILE_END1
+push pointer 0
+push local 0
+push local 1
+push local 0
+push constant 3
+add
+push local 1
+call TwoDArray.isSimilar 5
+push local 0
+push this 2
+call Math.multiply 2
+push local 1
+add
+push this 0
+add
+pop pointer 1
+push that 0
+push constant 2
+eq
+not
+and
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+push local 0
+push this 2
+call Math.multiply 2
+push local 1
+add
+push this 0
+add
+pop pointer 1
+push that 0
+return
+label IF_FALSE3
+push pointer 0
+push local 0
+push constant 1
+add
+push local 1
+push local 0
+push constant 1
+add
+push constant 3
+add
+push local 1
+call TwoDArray.isSimilar 5
+push local 0
+push constant 1
+add
+push this 2
+call Math.multiply 2
+push local 1
+add
+push this 0
+add
+pop pointer 1
+push that 0
+push constant 2
+eq
+not
+and
+if-goto IF_TRUE4
+goto IF_FALSE4
+label IF_TRUE4
+push local 0
+push constant 1
+add
+push this 2
+call Math.multiply 2
+push local 1
+add
+push this 0
+add
+pop pointer 1
+push that 0
+return
+label IF_FALSE4
+push pointer 0
+push local 0
+push constant 2
+add
+push local 1
+push local 0
+push constant 2
+add
+push constant 3
+add
+push local 1
+call TwoDArray.isSimilar 5
+push local 0
+push constant 2
+add
+push this 2
+call Math.multiply 2
+push local 1
+add
+push this 0
+add
+pop pointer 1
+push that 0
+push constant 2
+eq
+not
+and
+if-goto IF_TRUE5
+goto IF_FALSE5
+label IF_TRUE5
+push local 0
+push constant 2
+add
+push this 2
+call Math.multiply 2
+push local 1
+add
+push this 0
+add
+pop pointer 1
+push that 0
+return
+label IF_FALSE5
+push pointer 0
+push local 0
+push constant 3
+add
+push local 1
+push local 0
+push constant 3
+add
+push constant 3
+add
+push local 1
+call TwoDArray.isSimilar 5
+push local 0
+push constant 3
+add
+push this 2
+call Math.multiply 2
+push local 1
+add
+push this 0
+add
+pop pointer 1
+push that 0
+push constant 2
+eq
+not
+and
+if-goto IF_TRUE6
+goto IF_FALSE6
+label IF_TRUE6
+push local 0
+push constant 3
+add
+push this 2
+call Math.multiply 2
+push local 1
+add
+push this 0
+add
+pop pointer 1
+push that 0
+return
+label IF_FALSE6
+push local 1
+push constant 1
+add
+pop local 1
+goto WHILE_EXP1
+label WHILE_END1
+push constant 0
+pop local 0
+push constant 0
+pop local 1
+label WHILE_EXP2
+push local 0
+push this 2
+push constant 3
+sub
+lt
+not
+if-goto WHILE_END2
+label WHILE_EXP3
+push local 1
+push this 1
+push constant 3
+sub
+lt
+not
+if-goto WHILE_END3
+push pointer 0
+push local 0
+push local 1
+push local 0
+push constant 3
+add
+push local 1
+push constant 3
+add
+call TwoDArray.isSimilar 5
+push local 0
+push this 2
+call Math.multiply 2
+push local 1
+add
+push this 0
+add
+pop pointer 1
+push that 0
+push constant 2
+eq
+not
+and
+if-goto IF_TRUE7
+goto IF_FALSE7
+label IF_TRUE7
+push local 0
+push this 2
+call Math.multiply 2
+push local 1
+add
+push this 0
+add
+pop pointer 1
+push that 0
+return
+label IF_FALSE7
+push local 1
+push constant 1
+add
+pop local 1
+goto WHILE_EXP3
+label WHILE_END3
+push constant 0
+pop local 1
+push local 0
+push constant 1
+add
+pop local 0
+goto WHILE_EXP2
+label WHILE_END2
+push constant 0
+pop local 0
+push this 1
+push constant 1
+sub
+pop local 1
+label WHILE_EXP4
+push local 0
+push this 2
+push constant 3
+sub
+lt
+not
+if-goto WHILE_END4
+label WHILE_EXP5
+push local 1
+push constant 2
+gt
+not
+if-goto WHILE_END5
+push pointer 0
+push local 0
+push local 1
+push local 0
+push constant 3
+add
+push local 1
+push constant 3
+sub
+call TwoDArray.isSimilar 5
+push local 0
+push this 2
+call Math.multiply 2
+push local 1
+add
+push this 0
+add
+pop pointer 1
+push that 0
+push constant 2
+eq
+not
+and
+if-goto IF_TRUE8
+goto IF_FALSE8
+label IF_TRUE8
+push local 0
+push this 2
+call Math.multiply 2
+push local 1
+add
+push this 0
+add
+pop pointer 1
+push that 0
+return
+label IF_FALSE8
+push local 1
+push constant 1
+sub
+pop local 1
+goto WHILE_EXP5
+label WHILE_END5
+push this 1
+push constant 1
+sub
+pop local 1
+push local 0
+push constant 1
+add
+pop local 0
+goto WHILE_EXP4
+label WHILE_END4
+push constant 2
+return
+function TwoDArray.isSimilar 0
+push argument 0
+pop pointer 0
+push argument 2
+push argument 4
+eq
+if-goto IF_TRUE0
+goto IF_FALSE0
+label IF_TRUE0
+label WHILE_EXP0
+push argument 1
+push argument 3
+lt
+not
+if-goto WHILE_END0
+push argument 1
+push this 2
+call Math.multiply 2
+push argument 2
+add
+push this 0
+add
+pop pointer 1
+push that 0
+push argument 3
+push this 2
+call Math.multiply 2
+push argument 2
+add
+push this 0
+add
+pop pointer 1
+push that 0
+eq
+not
+if-goto IF_TRUE1
+goto IF_FALSE1
+label IF_TRUE1
+push constant 0
+return
+label IF_FALSE1
+push argument 1
+push constant 1
+add
+pop argument 1
+goto WHILE_EXP0
+label WHILE_END0
+push constant 0
+not
+return
+label IF_FALSE0
+push argument 1
+push argument 3
+eq
+if-goto IF_TRUE2
+goto IF_FALSE2
+label IF_TRUE2
+label WHILE_EXP1
+push argument 2
+push argument 4
+lt
+not
+if-goto WHILE_END1
+push argument 1
+push this 2
+call Math.multiply 2
+push argument 2
+add
+push this 0
+add
+pop pointer 1
+push that 0
+push argument 1
+push this 2
+call Math.multiply 2
+push argument 4
+add
+push this 0
+add
+pop pointer 1
+push that 0
+eq
+not
+if-goto IF_TRUE3
+goto IF_FALSE3
+label IF_TRUE3
+push constant 0
+return
+label IF_FALSE3
+push argument 2
+push constant 1
+add
+pop argument 2
+goto WHILE_EXP1
+label WHILE_END1
+push constant 0
+not
+return
+label IF_FALSE2
+label WHILE_EXP2
+push argument 2
+push argument 4
+lt
+not
+if-goto WHILE_END2
+push argument 1
+push this 2
+call Math.multiply 2
+push argument 2
+add
+push this 0
+add
+pop pointer 1
+push that 0
+push argument 3
+push this 2
+call Math.multiply 2
+push argument 4
+add
+push this 0
+add
+pop pointer 1
+push that 0
+eq
+not
+if-goto IF_TRUE4
+goto IF_FALSE4
+label IF_TRUE4
+push constant 0
+return
+label IF_FALSE4
+push argument 2
+push constant 1
+add
+pop argument 2
+push argument 1
+push constant 1
+add
+pop argument 1
+goto WHILE_EXP2
+label WHILE_END2
+label WHILE_EXP3
+push argument 4
+push argument 2
+lt
+not
+if-goto WHILE_END3
+push argument 1
+push this 2
+call Math.multiply 2
+push argument 2
+add
+push this 0
+add
+pop pointer 1
+push that 0
+push argument 3
+push this 2
+call Math.multiply 2
+push argument 4
+add
+push this 0
+add
+pop pointer 1
+push that 0
+eq
+not
+if-goto IF_TRUE5
+goto IF_FALSE5
+label IF_TRUE5
+push constant 0
+return
+label IF_FALSE5
+push argument 2
+push constant 1
+sub
+pop argument 2
+push argument 1
+push constant 1
+add
+pop argument 1
+goto WHILE_EXP3
+label WHILE_END3
+push constant 0
+not
+return
