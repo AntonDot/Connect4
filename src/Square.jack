@@ -1,0 +1,114 @@
+// Размер квадрата - 66
+class Square 
+{
+    field int x, y, xi, stepDownCounter, player;
+    field ConnectGame game;
+
+    // Создает новый квадрат с заданной позицией и текущим игроком
+    constructor Square new(int Ax, int Ay, ConnectGame Agame, int APlayer) 
+    { 
+        let player = APlayer; //0 - черный, 1 - белый
+        let game = Agame;
+        let xi = 0; // Номер столбца (индексация  с 0)
+	    let x = Ax;
+	    let y = Ay;
+        do show();
+        return this;
+    }
+
+    method int getXi() // Возвращает номер текущего столбца
+    {
+        return xi;
+    }
+
+    method void show() // Показывает на экране квадрат в соответствии с его цветом
+    {
+        do Screen.setColor(true); // чёрный
+        do draw();
+        if (player = 1) // Если ход белого
+        {
+            do Screen.setColor(false); 
+            // Отрисовывам белый квадрат внутри черного, делая отступ
+            do Screen.drawRectangle(x+1+3, y+1+3, x + 28-3, y + 28-3); 
+            do Screen.setColor(true);
+        }  
+        return;
+    }
+
+    method void hide() // Скрывает квадрат
+    {
+        do Screen.setColor(false); // белый
+	    do draw(); // Перекрашиваем
+        return;
+    }
+
+    method void draw() // Рисует кввадрат
+    {
+        do Screen.drawRectangle(x+1, y+1, x + 28, y + 28);
+	    return;
+    }
+
+    // Передвигает квадрат в соответствии с направлением - влево(1), вправо(2), вниз(3)
+    method void move(int direction)
+    {
+	    do hide();
+
+        if (direction = 1) 
+        {
+            do moveLeft();
+        }
+        else 
+        {
+            if (direction = 2) 
+            {
+                do moveRight();
+            }
+            else 
+            {
+                if (direction = 3) 
+                {
+                    do moveDown();
+                }
+            }
+        }
+	    do show();
+	    return;
+    }
+
+    method void moveLeft() 
+    {
+        if (xi > 0) 
+        {
+            let xi = xi - 1;
+            let x = x - 35; // Сдвигаемся на столбец влево (35 - ширина столбца)
+            do show();
+        }
+        return;
+    }
+
+    method void moveRight() 
+    {
+        if (xi < 6) 
+        {
+            let xi = xi + 1;
+            let x = x + 35; // Сдвигаемся на столбец вправо
+            do show();
+        }
+        return;
+    }
+
+    method void moveDown() 
+    {
+        // Узнаем, сколько в текущей колонне уже есть квадратов и вычисляем кол-во шагов
+        let stepDownCounter = 6 - game.getCountInColumn(xi);
+        let y = y + (35 * stepDownCounter);
+        do show();
+        return;
+    }
+
+    method void dispose() // Очищает из памяти данные о квадрате
+    {
+        do Memory.deAlloc(this);
+        return;
+    }
+}

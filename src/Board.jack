@@ -1,17 +1,21 @@
-class TwoDArray {
+class Board 
+{
     field Array mainArray; // Основной массив
     field int rows, cols; // Количество строк и столбцов
-    constructor TwoDArray new(int Arows, int Acols) {
-        var int i, j;
+    constructor Board new(int Arows, int Acols) 
+    {
+        var int i, j; // Индексы текущего столбца и строки
 
-        let rows = Arows; // Количество строк yi
         let cols = Acols; // Количество столбцов xi
+        let rows = Arows; // Количество строк yi
         let mainArray = Array.new(cols*rows); // Создаем массив
-        while (i< cols) { // Создаем массив
-            
-            while (j < rows) { // Создаем массив
-                
-                let mainArray[i*cols+(j)] = 2;
+
+        // Зполняем mainArray дефолтными значениями (у нас это число 2)
+        while (i < cols) 
+        { 
+            while (j < rows) 
+            {
+                let mainArray[i*cols + j] = 2;
                 let j = j + 1;
             }
             let i = i + 1;
@@ -19,49 +23,47 @@ class TwoDArray {
         }
         let i = 0; // Сбрасываем индекс столбца
 
-        // Теперь mainArray заполнен значениями
-        return this;
+        return this; // Возвращаем сам массив
     }
 
-    method void set(int x, int y, int value) {
-        var int index;
-        let index = x*cols+y;
-        let mainArray[index] = value;
+    method void set(int x, int y, int value)
+    {
+        let mainArray[x*cols + y] = value;
         return;
     }
 
-    method int get(int x, int y) {
-        var int index;
-        let index = x*cols+y;
-        return mainArray[index];
+    method int get(int x, int y) 
+    {
+        return mainArray[x*cols + y];
     }
 
     method int findWinner()
     {
-        var int x,y;
+        var int x, y;
         
-        //if(isSimilar(x,y,x,y+3)) {
-        //    do Output.printInt(mainArray[0]);
-        //}
         // Проверяем вертикальные линии
-        while (x < cols) {
-            if(isSimilar(x,y,x,y+3) & ~(mainArray[x*cols+y] = 2)) {               
-                return mainArray[x*cols+y];
+        while (x < cols) 
+        {
+            if (isSimilar(x, y, x, y + 3) & ~(mainArray[x*cols + y] = 2)) 
+            {               
+                return mainArray[x*cols + y];
             }
-            if(isSimilar(x,y+1,x,y+1+3)& ~(mainArray[x*cols+y+1] = 2)) {               
-                return mainArray[x*cols+y+1];
+            if (isSimilar(x, y + 1, x, y + 1 + 3) & ~(mainArray[x*cols + y + 1] = 2)) 
+            {               
+                return mainArray[x*cols + y + 1];
             }
-            if(isSimilar(x,y+2,x,y+2+3)& ~(mainArray[x*cols+y+2] = 2)) {                
-                return mainArray[x*cols+y+2];
+            if (isSimilar(x, y + 2, x, y + 2 + 3) & ~(mainArray[x*cols + y + 2] = 2)) {                
+                return mainArray[x*cols + y + 2];
             }
             let x = x + 1;           
         }
+
         
         // Проверяем горизонтальные линии
         let x = 0;
         let y = 0;
         while (y < rows) {
-            if(isSimilar(x,y,x+3,y) & ~(mainArray[x*cols+y] = 2)) {                
+            if (isSimilar(x, y, x + 3, y) & ~(mainArray[x*cols + y] = 2)) {                
                 return mainArray[x*cols+y];
             }
             if(isSimilar(x+1,y,x+1+3,y) & ~(mainArray[x+1*cols+y] = 2)) {                
@@ -110,8 +112,12 @@ class TwoDArray {
     }
 
 
-    method boolean isSimilar(int x1, int y1, int x2, int y2) {
-        if(y1=y2) {
+
+    // Проверяет, равны ли элементы друг другу в заданном диапазоне от x1, y1 до x2, y2
+    method boolean isSimilar(int x1, int y1, int x2, int y2) 
+    {
+        if (y1 = y2) 
+        {
             while(x1<x2) {
                 if(~(mainArray[x1*cols+y1] = mainArray[x2*cols+y1])) {
                     return false;
@@ -120,23 +126,26 @@ class TwoDArray {
             }
             return true;
         }
-        if(x1=x2) {
-            while(y1<y2) {
-                if(~(mainArray[x1*cols+y1] = mainArray[x1*cols+y2])) {
+        if (x1 = x2)
+        {
+            while (y1 < y2)
+            {
+                if(~(mainArray[x1*cols + y1] = mainArray[x1*cols+y2]))
+                {
                     return false;
                 }
                 let y1 = y1 + 1;
             }
             return true;
         }
-        while(y1<y2) {
+        while (y1 < y2) {
             if(~(mainArray[x1*cols+y1] = mainArray[x2*cols+y2])) {
                 return false;
             }
             let y1 = y1 + 1;
             let x1 = x1 + 1;
         }
-        while(y2<y1) {
+        while (y2 < y1) {
             if(~(mainArray[x1*cols+y1] = mainArray[x2*cols+y2])) {
                 return false;
             }
@@ -144,5 +153,11 @@ class TwoDArray {
             let x1 = x1 + 1;
         }
         return true;
+    }
+
+    method void dispose()
+    {
+        do Memory.deAlloc(this);
+        return;
     }
 }
