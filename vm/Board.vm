@@ -2,10 +2,10 @@ function Board.new 2
     push constant 3
     call Memory.alloc 1
     pop pointer 0
-    push argument 1
-    pop this 2
     push argument 0
     pop this 1
+    push argument 1
+    pop this 2
     push this 2
     push this 1
     call Math.multiply 2
@@ -24,7 +24,7 @@ label Board_2
     not
     if-goto Board_3
     push local 0
-    push this 2
+    push this 1
     call Math.multiply 2
     push local 1
     add
@@ -53,14 +53,16 @@ label Board_1
     pop local 0
     push pointer 0
     return
-function Board.set 0
+function Board.setCell 1
     push argument 0
     pop pointer 0
     push argument 1
-    push this 2
+    push this 1
     call Math.multiply 2
     push argument 2
     add
+    pop local 0
+    push local 0
     push this 0
     add
     push argument 3
@@ -70,82 +72,60 @@ function Board.set 0
     pop that 0
     push constant 0
     return
-function Board.get 0
+function Board.getCell 1
     push argument 0
     pop pointer 0
     push argument 1
-    push this 2
+    push this 1
     call Math.multiply 2
     push argument 2
     add
+    pop local 0
+    push local 0
     push this 0
     add
     pop pointer 1
     push that 0
     return
-function Board.findWinner 2
+function Board.findWinner 3
     push argument 0
     pop pointer 0
+    push constant 0
+    pop local 0
+    push constant 0
+    pop local 1
 label Board_4
     push local 0
     push this 2
     lt
     not
     if-goto Board_5
-    push pointer 0
-    push local 0
-    push local 1
-    push local 0
-    push local 1
+    push constant 0
+    pop local 2
+label Board_6
+    push local 2
     push constant 3
-    add
-    call Board.isSimilar 5
-    push local 0
-    push this 2
-    call Math.multiply 2
-    push local 1
-    add
-    push this 0
-    add
-    pop pointer 1
-    push that 0
-    push constant 2
-    eq
-    not
-    and
+    lt
     not
     if-goto Board_7
-    push local 0
-    push this 2
-    call Math.multiply 2
-    push local 1
-    add
-    push this 0
-    add
-    pop pointer 1
-    push that 0
-    return
-    goto Board_6
-label Board_7
-label Board_6
     push pointer 0
     push local 0
     push local 1
-    push constant 1
+    push local 2
     add
     push local 0
     push local 1
-    push constant 1
+    push local 2
     add
     push constant 3
     add
     call Board.isSimilar 5
     push local 0
-    push this 2
+    push this 1
     call Math.multiply 2
     push local 1
     add
-    push constant 1
+    push local 2
     add
     push this 0
     add
@@ -158,11 +138,11 @@ label Board_6
     not
     if-goto Board_9
     push local 0
-    push this 2
+    push this 1
     call Math.multiply 2
     push local 1
     add
-    push constant 1
+    push local 2
     add
     push this 0
     add
@@ -172,50 +152,12 @@ label Board_6
     goto Board_8
 label Board_9
 label Board_8
-    push pointer 0
-    push local 0
-    push local 1
-    push constant 2
+    push local 2
+    push constant 1
     add
-    push local 0
-    push local 1
-    push constant 2
-    add
-    push constant 3
-    add
-    call Board.isSimilar 5
-    push local 0
-    push this 2
-    call Math.multiply 2
-    push local 1
-    add
-    push constant 2
-    add
-    push this 0
-    add
-    pop pointer 1
-    push that 0
-    push constant 2
-    eq
-    not
-    and
-    not
-    if-goto Board_11
-    push local 0
-    push this 2
-    call Math.multiply 2
-    push local 1
-    add
-    push constant 2
-    add
-    push this 0
-    add
-    pop pointer 1
-    push that 0
-    return
-    goto Board_10
-label Board_11
-label Board_10
+    pop local 2
+    goto Board_6
+label Board_7
     push local 0
     push constant 1
     add
@@ -226,22 +168,36 @@ label Board_5
     pop local 0
     push constant 0
     pop local 1
-label Board_12
+label Board_10
     push local 1
     push this 1
+    lt
+    not
+    if-goto Board_11
+    push constant 0
+    pop local 2
+label Board_12
+    push local 2
+    push constant 4
     lt
     not
     if-goto Board_13
     push pointer 0
     push local 0
+    push local 2
+    add
     push local 1
     push local 0
     push constant 3
     add
+    push local 2
+    add
     push local 1
     call Board.isSimilar 5
     push local 0
-    push this 2
+    push local 2
+    add
+    push this 1
     call Math.multiply 2
     push local 1
     add
@@ -256,7 +212,9 @@ label Board_12
     not
     if-goto Board_15
     push local 0
-    push this 2
+    push local 2
+    add
+    push this 1
     call Math.multiply 2
     push local 1
     add
@@ -268,110 +226,52 @@ label Board_12
     goto Board_14
 label Board_15
 label Board_14
-    push pointer 0
-    push local 0
+    push local 2
     push constant 1
     add
+    pop local 2
+    goto Board_12
+label Board_13
     push local 1
-    push local 0
     push constant 1
     add
-    push constant 3
-    add
-    push local 1
-    call Board.isSimilar 5
+    pop local 1
+    goto Board_10
+label Board_11
+    push constant 0
+    pop local 0
+    push constant 0
+    pop local 1
+label Board_16
     push local 0
-    push constant 1
-    add
     push this 2
-    call Math.multiply 2
-    push local 1
-    add
-    push this 0
-    add
-    pop pointer 1
-    push that 0
-    push constant 2
-    eq
-    not
-    and
+    push constant 3
+    sub
+    lt
     not
     if-goto Board_17
-    push local 0
-    push constant 1
-    add
-    push this 2
-    call Math.multiply 2
+    push constant 0
+    pop local 1
+label Board_18
     push local 1
-    add
-    push this 0
-    add
-    pop pointer 1
-    push that 0
-    return
-    goto Board_16
-label Board_17
-label Board_16
-    push pointer 0
-    push local 0
-    push constant 2
-    add
-    push local 1
-    push local 0
-    push constant 2
-    add
+    push this 1
     push constant 3
-    add
-    push local 1
-    call Board.isSimilar 5
-    push local 0
-    push constant 2
-    add
-    push this 2
-    call Math.multiply 2
-    push local 1
-    add
-    push this 0
-    add
-    pop pointer 1
-    push that 0
-    push constant 2
-    eq
-    not
-    and
+    sub
+    lt
     not
     if-goto Board_19
-    push local 0
-    push constant 2
-    add
-    push this 2
-    call Math.multiply 2
-    push local 1
-    add
-    push this 0
-    add
-    pop pointer 1
-    push that 0
-    return
-    goto Board_18
-label Board_19
-label Board_18
     push pointer 0
     push local 0
-    push constant 3
-    add
     push local 1
     push local 0
     push constant 3
     add
+    push local 1
     push constant 3
     add
-    push local 1
     call Board.isSimilar 5
     push local 0
-    push constant 3
-    add
-    push this 2
+    push this 1
     call Math.multiply 2
     push local 1
     add
@@ -386,9 +286,7 @@ label Board_18
     not
     if-goto Board_21
     push local 0
-    push constant 3
-    add
-    push this 2
+    push this 1
     call Math.multiply 2
     push local 1
     add
@@ -404,100 +302,18 @@ label Board_20
     push constant 1
     add
     pop local 1
-    goto Board_12
-label Board_13
-    push constant 0
-    pop local 0
-    push constant 0
+    goto Board_18
+label Board_19
+    push this 1
+    push constant 1
+    sub
     pop local 1
 label Board_22
-    push local 0
-    push this 2
-    push constant 3
-    sub
-    lt
-    not
-    if-goto Board_23
-label Board_24
-    push local 1
-    push this 1
-    push constant 3
-    sub
-    lt
-    not
-    if-goto Board_25
-    push pointer 0
-    push local 0
-    push local 1
-    push local 0
-    push constant 3
-    add
-    push local 1
-    push constant 3
-    add
-    call Board.isSimilar 5
-    push local 0
-    push this 2
-    call Math.multiply 2
-    push local 1
-    add
-    push this 0
-    add
-    pop pointer 1
-    push that 0
-    push constant 2
-    eq
-    not
-    and
-    not
-    if-goto Board_27
-    push local 0
-    push this 2
-    call Math.multiply 2
-    push local 1
-    add
-    push this 0
-    add
-    pop pointer 1
-    push that 0
-    return
-    goto Board_26
-label Board_27
-label Board_26
-    push local 1
-    push constant 1
-    add
-    pop local 1
-    goto Board_24
-label Board_25
-    push constant 0
-    pop local 1
-    push local 0
-    push constant 1
-    add
-    pop local 0
-    goto Board_22
-label Board_23
-    push constant 0
-    pop local 0
-    push this 1
-    push constant 1
-    sub
-    pop local 1
-label Board_28
-    push local 0
-    push this 2
-    push constant 3
-    sub
-    lt
-    not
-    if-goto Board_29
-label Board_30
     push local 1
     push constant 2
     gt
     not
-    if-goto Board_31
+    if-goto Board_23
     push pointer 0
     push local 0
     push local 1
@@ -509,7 +325,7 @@ label Board_30
     sub
     call Board.isSimilar 5
     push local 0
-    push this 2
+    push this 1
     call Math.multiply 2
     push local 1
     add
@@ -522,9 +338,9 @@ label Board_30
     not
     and
     not
-    if-goto Board_33
+    if-goto Board_25
     push local 0
-    push this 2
+    push this 1
     call Math.multiply 2
     push local 1
     add
@@ -533,25 +349,21 @@ label Board_30
     pop pointer 1
     push that 0
     return
-    goto Board_32
-label Board_33
-label Board_32
+    goto Board_24
+label Board_25
+label Board_24
     push local 1
     push constant 1
     sub
     pop local 1
-    goto Board_30
-label Board_31
-    push this 1
-    push constant 1
-    sub
-    pop local 1
+    goto Board_22
+label Board_23
     push local 0
     push constant 1
     add
     pop local 0
-    goto Board_28
-label Board_29
+    goto Board_16
+label Board_17
     push constant 2
     return
 function Board.isSimilar 0
@@ -561,15 +373,15 @@ function Board.isSimilar 0
     push argument 4
     eq
     not
-    if-goto Board_35
-label Board_36
+    if-goto Board_27
+label Board_28
     push argument 1
     push argument 3
     lt
     not
-    if-goto Board_37
+    if-goto Board_29
     push argument 1
-    push this 2
+    push this 1
     call Math.multiply 2
     push argument 2
     add
@@ -578,7 +390,7 @@ label Board_36
     pop pointer 1
     push that 0
     push argument 3
-    push this 2
+    push this 1
     call Math.multiply 2
     push argument 2
     add
@@ -589,37 +401,37 @@ label Board_36
     eq
     not
     not
-    if-goto Board_39
+    if-goto Board_31
     push constant 0
     return
-    goto Board_38
-label Board_39
-label Board_38
+    goto Board_30
+label Board_31
+label Board_30
     push argument 1
     push constant 1
     add
     pop argument 1
-    goto Board_36
-label Board_37
+    goto Board_28
+label Board_29
     push constant 1
     neg
     return
-    goto Board_34
-label Board_35
-label Board_34
+    goto Board_26
+label Board_27
+label Board_26
     push argument 1
     push argument 3
     eq
     not
-    if-goto Board_41
-label Board_42
+    if-goto Board_33
+label Board_34
     push argument 2
     push argument 4
     lt
     not
-    if-goto Board_43
+    if-goto Board_35
     push argument 1
-    push this 2
+    push this 1
     call Math.multiply 2
     push argument 2
     add
@@ -628,7 +440,95 @@ label Board_42
     pop pointer 1
     push that 0
     push argument 1
-    push this 2
+    push this 1
+    call Math.multiply 2
+    push argument 4
+    add
+    push this 0
+    add
+    pop pointer 1
+    push that 0
+    eq
+    not
+    not
+    if-goto Board_37
+    push constant 0
+    return
+    goto Board_36
+label Board_37
+label Board_36
+    push argument 2
+    push constant 1
+    add
+    pop argument 2
+    goto Board_34
+label Board_35
+    push constant 1
+    neg
+    return
+    goto Board_32
+label Board_33
+label Board_32
+label Board_38
+    push argument 2
+    push argument 4
+    lt
+    not
+    if-goto Board_39
+    push argument 1
+    push this 1
+    call Math.multiply 2
+    push argument 2
+    add
+    push this 0
+    add
+    pop pointer 1
+    push that 0
+    push argument 3
+    push this 1
+    call Math.multiply 2
+    push argument 4
+    add
+    push this 0
+    add
+    pop pointer 1
+    push that 0
+    eq
+    not
+    not
+    if-goto Board_41
+    push constant 0
+    return
+    goto Board_40
+label Board_41
+label Board_40
+    push argument 1
+    push constant 1
+    add
+    pop argument 1
+    push argument 2
+    push constant 1
+    add
+    pop argument 2
+    goto Board_38
+label Board_39
+label Board_42
+    push argument 4
+    push argument 2
+    lt
+    not
+    if-goto Board_43
+    push argument 1
+    push this 1
+    call Math.multiply 2
+    push argument 2
+    add
+    push this 0
+    add
+    pop pointer 1
+    push that 0
+    push argument 3
+    push this 1
     call Math.multiply 2
     push argument 4
     add
@@ -647,102 +547,14 @@ label Board_45
 label Board_44
     push argument 2
     push constant 1
-    add
-    pop argument 2
-    goto Board_42
-label Board_43
-    push constant 1
-    neg
-    return
-    goto Board_40
-label Board_41
-label Board_40
-label Board_46
-    push argument 2
-    push argument 4
-    lt
-    not
-    if-goto Board_47
-    push argument 1
-    push this 2
-    call Math.multiply 2
-    push argument 2
-    add
-    push this 0
-    add
-    pop pointer 1
-    push that 0
-    push argument 3
-    push this 2
-    call Math.multiply 2
-    push argument 4
-    add
-    push this 0
-    add
-    pop pointer 1
-    push that 0
-    eq
-    not
-    not
-    if-goto Board_49
-    push constant 0
-    return
-    goto Board_48
-label Board_49
-label Board_48
-    push argument 2
-    push constant 1
-    add
-    pop argument 2
-    push argument 1
-    push constant 1
-    add
-    pop argument 1
-    goto Board_46
-label Board_47
-label Board_50
-    push argument 4
-    push argument 2
-    lt
-    not
-    if-goto Board_51
-    push argument 1
-    push this 2
-    call Math.multiply 2
-    push argument 2
-    add
-    push this 0
-    add
-    pop pointer 1
-    push that 0
-    push argument 3
-    push this 2
-    call Math.multiply 2
-    push argument 4
-    add
-    push this 0
-    add
-    pop pointer 1
-    push that 0
-    eq
-    not
-    not
-    if-goto Board_53
-    push constant 0
-    return
-    goto Board_52
-label Board_53
-label Board_52
-    push argument 2
-    push constant 1
     sub
     pop argument 2
     push argument 1
     push constant 1
     add
     pop argument 1
-    goto Board_50
-label Board_51
+    goto Board_42
+label Board_43
     push constant 1
     neg
     return

@@ -25,7 +25,7 @@ class Board
         return this;
     }
 
-    method void set(int x, int y, int value) 
+    method void setCell(int x, int y, int value) 
     {
         var int index;
         let index = x*rows + y;
@@ -33,7 +33,7 @@ class Board
         return;
     }
 
-    method int get(int x, int y) 
+    method int getCell(int x, int y) 
     {
         var int index;
         let index = x*rows + y;
@@ -45,6 +45,8 @@ class Board
         var int x, y, shift;
         
         // Проверяем вертикальные линии
+        let x = 0;
+        let y = 0;
         while (x < cols) 
         {
             let shift = 0;
@@ -82,7 +84,7 @@ class Board
         while (x < (cols - 3)) 
         {
             let y = 0;
-            while (y < (rows-3)) 
+            while (y < (rows - 3)) 
             {
                 if (isSimilar(x, y, x + 3, y + 3) & ~(mainArray[x*rows + y] = 2)) 
                 {               
@@ -110,6 +112,7 @@ class Board
 
     method boolean isSimilar(int x1, int y1, int x2, int y2) 
     {
+        // проверка в горизонтали
         if (y1 = y2) 
         {
             while (x1 < x2)
@@ -122,18 +125,29 @@ class Board
             }
             return true;
         }
+        
+        // проверка в вертикали
+        if (x1 = x2)
+        {
+            while (y1 < y2)
+            {
+                if (~(mainArray[x1*rows + y1] = mainArray[x1*rows + y2]))
+                {
+                    return false;
+                }
+                let y1 = y1 + 1;
+            }
+            return true;
+        }
 
-        while (y1 < y2 | (x1 < x2)) 
+        //проверка в диагоналях
+        while (y1 < y2) 
         {
             if (~(mainArray[x1*rows + y1] = mainArray[x2*rows + y2]))
             {
                 return false;
             }
-
-            if (~(x1 = x2) | (y1 = y2))
-            {
-                let x1 = x1 + 1;
-            }
+            let x1 = x1 + 1;
             let y1 = y1 + 1;
         }
 

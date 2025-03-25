@@ -183,7 +183,7 @@ label ConnectGame_13
     pop pointer 1
     push that 0
     push this 2
-    call Board.set 4
+    call Board.setCell 4
     pop temp 0
     push local 1
     call Square.getXi 1
@@ -227,6 +227,16 @@ label ConnectGame_13
     goto ConnectGame_16
 label ConnectGame_17
 label ConnectGame_16
+    push this 5
+    not
+    not
+    if-goto ConnectGame_19
+    push pointer 0
+    call ConnectGame.CheckIfBoardFull 1
+    pop this 5
+    goto ConnectGame_18
+label ConnectGame_19
+label ConnectGame_18
     goto ConnectGame_14
 label ConnectGame_15
 label ConnectGame_14
@@ -242,7 +252,7 @@ label ConnectGame_8
 label ConnectGame_5
     push local 2
     not
-    if-goto ConnectGame_19
+    if-goto ConnectGame_21
     call Screen.clearScreen 0
     pop temp 0
     push constant 10
@@ -291,12 +301,12 @@ label ConnectGame_5
     call String.appendChar 2
     call Output.printString 1
     pop temp 0
-label ConnectGame_20
+label ConnectGame_22
     push local 0
     push constant 0
     eq
     not
-    if-goto ConnectGame_21
+    if-goto ConnectGame_23
     call Keyboard.keyPressed 0
     pop local 0
     push this 1
@@ -304,23 +314,61 @@ label ConnectGame_20
     pop temp 0
     push constant 0
     return
+    goto ConnectGame_22
+label ConnectGame_23
     goto ConnectGame_20
 label ConnectGame_21
-    goto ConnectGame_18
-label ConnectGame_19
-label ConnectGame_18
+label ConnectGame_20
     push this 5
     not
-    if-goto ConnectGame_23
+    if-goto ConnectGame_25
     push pointer 0
     call ConnectGame.showResults 1
     pop temp 0
-    goto ConnectGame_22
-label ConnectGame_23
-label ConnectGame_22
+    goto ConnectGame_24
+label ConnectGame_25
+label ConnectGame_24
     push this 1
     call Board.dispose 1
     pop temp 0
+    push constant 0
+    return
+function ConnectGame.CheckIfBoardFull 2
+    push argument 0
+    pop pointer 0
+    push constant 0
+    pop local 0
+label ConnectGame_26
+    push local 1
+    push constant 7
+    lt
+    not
+    if-goto ConnectGame_27
+    push local 0
+    push local 1
+    push this 0
+    add
+    pop pointer 1
+    push that 0
+    add
+    pop local 0
+    push local 1
+    push constant 1
+    add
+    pop local 1
+    goto ConnectGame_26
+label ConnectGame_27
+    push local 0
+    push constant 42
+    eq
+    not
+    if-goto ConnectGame_29
+    push constant 1
+    neg
+    return
+    goto ConnectGame_28
+label ConnectGame_29
+label ConnectGame_28
     push constant 0
     return
 function ConnectGame.showResults 2
@@ -331,16 +379,11 @@ function ConnectGame.showResults 2
     push this 1
     call Board.findWinner 1
     pop local 1
-    push pointer 0
-    call ConnectGame.CheckIfBoardFull 1
-    pop local 0
-    push local 0
     push local 1
     push constant 2
     eq
-    and
     not
-    if-goto ConnectGame_25
+    if-goto ConnectGame_31
     push constant 9
     push constant 27
     call Output.moveCursor 2
@@ -397,8 +440,8 @@ function ConnectGame.showResults 2
     call String.appendChar 2
     call Output.printString 1
     pop temp 0
-    goto ConnectGame_24
-label ConnectGame_25
+    goto ConnectGame_30
+label ConnectGame_31
     push constant 9
     push constant 22
     call Output.moveCursor 2
@@ -425,7 +468,7 @@ label ConnectGame_25
     push constant 0
     eq
     not
-    if-goto ConnectGame_27
+    if-goto ConnectGame_33
     push constant 5
     call String.new 1
     push constant 66
@@ -440,8 +483,8 @@ label ConnectGame_25
     call String.appendChar 2
     call Output.printString 1
     pop temp 0
-    goto ConnectGame_26
-label ConnectGame_27
+    goto ConnectGame_32
+label ConnectGame_33
     push constant 5
     call String.new 1
     push constant 87
@@ -456,7 +499,7 @@ label ConnectGame_27
     call String.appendChar 2
     call Output.printString 1
     pop temp 0
-label ConnectGame_26
+label ConnectGame_32
     push constant 5
     call String.new 1
     push constant 32
@@ -497,44 +540,6 @@ label ConnectGame_26
     call String.appendChar 2
     call Output.printString 1
     pop temp 0
-label ConnectGame_24
-    push constant 0
-    return
-function ConnectGame.CheckIfBoardFull 2
-    push argument 0
-    pop pointer 0
-    push constant 0
-    pop local 0
-label ConnectGame_28
-    push local 1
-    push constant 7
-    lt
-    not
-    if-goto ConnectGame_29
-    push local 0
-    push local 1
-    push this 0
-    add
-    pop pointer 1
-    push that 0
-    add
-    pop local 0
-    push local 1
-    push constant 1
-    add
-    pop local 1
-    goto ConnectGame_28
-label ConnectGame_29
-    push local 0
-    push constant 42
-    eq
-    not
-    if-goto ConnectGame_31
-    push constant 1
-    neg
-    return
-    goto ConnectGame_30
-label ConnectGame_31
 label ConnectGame_30
     push constant 0
     return

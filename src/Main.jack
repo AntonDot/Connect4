@@ -6,7 +6,7 @@ class Main
         var int key;
         var boolean exit;
 
-        do Output.moveCursor(10, 25);
+        do Output.moveCursor(10, 22);
         do Output.printString("Press any key to start");
         while (key = 0) // ожидает нажатия кнопки
         {

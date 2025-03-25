@@ -1,6 +1,6 @@
 function Main.main 3
     push constant 10
-    push constant 25
+    push constant 22
     call Output.moveCursor 2
     pop temp 0
     push constant 22

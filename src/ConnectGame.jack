@@ -90,7 +90,7 @@ class ConnectGame {
                         {
                             do square.move(3);
                             // устанавливает на текущем месте номер текущего игрока на доске
-                            do board.set(square.getXi(), columnsCount[square.getXi()], currentPlayer);
+                            do board.setCell(square.getXi(), columnsCount[square.getXi()], currentPlayer);
                             // Увеличиваем кол-во квадратов в столбце
                             let columnsCount[square.getXi()] = columnsCount[square.getXi()] + 1;
                             //забываем про текущий квадрат, т.к. он нам больше не нужен
@@ -102,6 +102,11 @@ class ConnectGame {
                             if (~(board.findWinner() = 2)) // если есть победитель, т.е. вернулось не дефолтное значение(2)
                             {
                                 let exit = true;
+                            }
+
+                            if (~(exit))
+                            { 
+                                let exit = CheckIfBoardFull();
                             }
                         }
                     }
@@ -133,6 +138,22 @@ class ConnectGame {
         return;
     }
 
+    method boolean CheckIfBoardFull()
+    {
+        var int sum, index;
+        let sum = 0;
+        while (index < 7) // считаем, сколько занято клеток на доске
+        {
+            let sum = sum + columnsCount[index];
+            let index = index + 1;
+        }
+        if (sum = 42) // если все (6*7) заполнены, игра окончена
+        {
+            return true;
+        }
+        return false;
+    }
+
     method void showResults()
     {
         var boolean isDraw;
@@ -140,8 +161,7 @@ class ConnectGame {
 
         do Screen.clearScreen();
         let winner = board.findWinner();
-        let isDraw = CheckIfBoardFull(); 
-        if (isDraw & (winner = 2)) 
+        if (winner = 2) // если не нашлось победителя, то есть веронулось дефолтное значение (2)
         {
             do Output.moveCursor(9, 27);
             do Output.printString("It's a draw");
@@ -167,22 +187,6 @@ class ConnectGame {
 	        do Output.printString("Game Over");
         }
         return;
-    }
-
-    method boolean CheckIfBoardFull()
-    {
-        var int sum, index;
-        let sum = 0;
-        while (index < 7) // считаем, сколько занято клеток на доске
-        {
-            let sum = sum + columnsCount[index];
-            let index = index + 1;
-        }
-        if (sum = 42) // если все (6*7) заполнены, игра окончена
-        {
-            return true;
-        }
-        return false;
     }
     
     method int getCountInColumn(int column)  // Подсчитывет кол-во квадратов в текущем столбце
