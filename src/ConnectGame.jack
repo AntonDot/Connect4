@@ -1,38 +1,44 @@
 class ConnectGame {
     field Array columnsCount;  
-    field TwoDArray board;  
+    field Board board;   // Игровое поле
     field int currentPlayer; // Текущий игрок (0 = черный, 1 = белый)
-    field int rows, cols;   // Размеры поля (6x7)
-    field boolean exit;     // Флаг выхода из игры
+    field int rows, cols;    // Размеры поля (6x7)
+    field boolean exit;    // Флаг выхода из игры
 
-    constructor ConnectGame new() {
+    constructor ConnectGame new()
+    {
         let rows = 6;        // 6 рядов
         let cols = 7;        // 7 столбцов
         let columnsCount = Array.new(cols); // Массив для хранения количества шаров в каждом столбце
         let exit = false;    // Флаг выхода из игры
-        let board = TwoDArray.new(rows, cols); // Создаем двумерный массив для хранения игрового поля
+        let board = Board.new(rows, cols); // Создаем двумерный массив для хранения игрового поля
+        // Поле нужно для проверки на выигрыш
         let currentPlayer = 0; // Черный игрок начинает
         do Screen.clearScreen(); // Очищаем экран
         return this;
     }
 
-    method void drawBoard() {
+    method void drawBoard() 
+    {
         var int x, y, xi, yi;
 
-        do Screen.setColor(true);  // Цвет фона (black)
+        do Screen.setColor(true);  // Цвет фона (чёрный)
+        // Нарисуем черный прямоугольник. 
+        //поверх него будем отрисовывать белые квадраты - клетки, чтобы в итоге получилась "сетка"
         do Screen.drawRectangle(129, 35,  379, 250);
-        // Рисуем игровое поле
+
         let y = 40;  // Начальная вертикальная позиция (по Y)
         let xi = 0;  // Индекс клетки по горизонтали
         let yi = 0;  // Индекс клетки по вертикали
-        // Пройдем по всем рядам
-        while (yi < 6) {  
+        // Пройдем по всем строкам
+        while (yi < 6) 
+        {  
             let x = 134;  // Начальная горизонтальная позиция (по X)
-            
-            // Пройдем по всем столбцам
-            while (xi < 7) {  
-                let xi=xi+1;
-                do Screen.setColor(false);  // Цвет фона (white)
+
+            while (xi < 7) // Пройдем по всем столбцам
+            {  
+                let xi = xi + 1;
+                do Screen.setColor(false);  // Цвет фона (белый)
                 do Screen.drawRectangle(x, y, x + 30, y + 30);  // Отрисовываем клетку
                 let x = x + 35;  // Сдвигаем на 35 пикселей вправо (для следующего столбца)
             }
@@ -43,89 +49,153 @@ class ConnectGame {
         return;
     }
 
-    method void run() {
+    method void run() 
+    {
         var char key;    // Клавиша, нажатая игроком
-        var Ball ball; // Declare the ball object
-        do drawBoard();  // Рисуем игровое поле
-        let ball = Ball.new(134,5,this,0); // Initialize the ball object
-        while(~exit) {
-            while (~exit) {
-                // waits for a key to be pressed.
-            
-                while ((key = 0) & (~exit)) {
-                    let key = Keyboard.keyPressed();               
-                }
-                if (key = 130) { 
-                    do ball.move(1); 
-                    let key = 0;
-                    }//left
-	            else {
-	                if (key = 132) { 
-                        do ball.move(2); 
-                        let key = 0;
-                    }//right
-		            else {
-                        if (key = 133) { 
-                            do ball.move(3);
-                            let key = 0;
-                            if(columnsCount[ball.getXi()] < 6){
-                            
+        var Square square;
+        var boolean escape;
 
-                            do board.set( ball.getXi(), columnsCount[ball.getXi()], currentPlayer);
-                            let columnsCount[ball.getXi()] = columnsCount[ball.getXi()] + 1;
-                            if(~(board.findWinner() = 2)) {
-                                let exit = true;
-                                
-                            }
-                            do ball.dispose();
-                            let currentPlayer = 1 - currentPlayer;
-                            if(columnsCount[0]+columnsCount[1]+columnsCount[2]+columnsCount[3]+columnsCount[4]+columnsCount[5]+columnsCount[6] = 42) {
-                                let exit = true;
-                            }
-                            let ball = Ball.new(134,5, this,currentPlayer);
-                            }
-                        
-                        
-                     }//down
-                        else {
-                            if (key = 140) { let exit = true; 
-                                let key = 0;
-                            }
-                       }
-		           }
+        let escape = false;
+        do drawBoard();  // Рисуем игровое поле
+        let square = Square.new(134, 5, this, 0); // первым рисуем черный квадрат над доской
+
+        while (~exit & (~escape)) 
+        {    
+            while (key = 0) // ожидает нажатия кнопки
+            {
+                let key = Keyboard.keyPressed();               
+            }
+
+            if (key = 140) // esc - выход
+            {
+                let escape = true;
+            }
+            else
+            {
+                // в метод move передается соответствующее direction (1, 2, 3)
+                if (key = 130) // стрелка влево
+                { 
+                    do square.move(1);
                 }
-                do Sys.wait(100); // Wait for 100 ms
+                else
+                { 
+                    if (key = 132) // стрелка вправо
+                    { 
+                        do square.move(2);
+                    }
+                    else
+                    {
+                        // стрелка вниз и если в текущем столбце есть свободное место
+                        if ((key = 133) & (columnsCount[square.getXi()] < 6))
+                        {
+                            do square.move(3);
+                            // устанавливает на текущем месте номер текущего игрока на доске
+                            do board.setCell(square.getXi(), columnsCount[square.getXi()], currentPlayer);
+                            // Увеличиваем кол-во квадратов в столбце
+                            let columnsCount[square.getXi()] = columnsCount[square.getXi()] + 1;
+                            //забываем про текущий квадрат, т.к. он нам больше не нужен
+                            do square.dispose(); 
+                            // Создаем новый квадрат для следующего игрока
+                            let currentPlayer = 1 - currentPlayer;
+                            let square = Square.new(134, 5, this, currentPlayer);
+
+                            if (~(board.findWinner() = 2)) // если есть победитель, т.е. вернулось не дефолтное значение(2)
+                            {
+                                let exit = true;
+                            }
+
+                            if (~(exit))
+                            { 
+                                let exit = CheckIfBoardFull();
+                            }
+                        }
+                    }
+                }
+            }
+            let key = 0;
+            do Sys.wait(100);
+        }
+
+        if (escape)
+        {
+            do Screen.clearScreen();
+            do Output.moveCursor(10, 22);
+            do Output.printString("You exited the game");
+
+            
+            while (key = 0) // ожидает нажатия кнопки
+            {
+                let key = Keyboard.keyPressed();
+                do board.dispose();
+                return;
             }
         }
-	    if (exit) {
-            do Screen.clearScreen();
-            if(board.findWinner() = 2) {
-                do Output.printString("It's a draw");
-                do Output.moveCursor(10,27);
-                do Output.printString("Game Over");
-            }
-            else {
-                do Output.printString("Player ");
-                if(board.findWinner() = 0) {
-                    do Output.printString("Black");
-                }
-                else {
-                    do Output.printString("White");
-                }
-                do Output.printString(" wins");
-                do Output.moveCursor(10,27);
-	            do Output.printString("Game Over");
-            }
-	    }
-            
+	    if (exit) 
+        {
+            do showResults();
+        }  
+        do board.dispose();
         return;
     }
 
-    method int getCountInColumn(int column) {
+    method boolean CheckIfBoardFull()
+    {
+        var int sum, index;
+        let sum = 0;
+        while (index < 7) // считаем, сколько занято клеток на доске
+        {
+            let sum = sum + columnsCount[index];
+            let index = index + 1;
+        }
+        if (sum = 42) // если все (6*7) заполнены, игра окончена
+        {
+            return true;
+        }
+        return false;
+    }
+
+    method void showResults()
+    {
+        var boolean isDraw;
+        var int winner;
+
+        do Screen.clearScreen();
+        let winner = board.findWinner();
+        if (winner = 2) // если не нашлось победителя, то есть веронулось дефолтное значение (2)
+        {
+            do Output.moveCursor(9, 27);
+            do Output.printString("It's a draw");
+            do Output.moveCursor(10, 27);
+            do Output.printString("Game Over");
+        }
+        else 
+        {
+            do Output.moveCursor(9, 22);
+            do Output.printString("Player ");
+            
+            if (winner = 0) 
+            {
+                do Output.printString("Black");
+            }
+            else 
+            {
+                do Output.printString("White");
+            }
+
+            do Output.printString(" wins");
+            do Output.moveCursor(11, 27);
+	        do Output.printString("Game Over");
+        }
+        return;
+    }
+    
+    method int getCountInColumn(int column)  // Подсчитывет кол-во квадратов в текущем столбце
+    {
         return columnsCount[column];
     }
 
-    method void dispose() {
+    method void dispose() // очищает память от игры
+    {
         do Memory.deAlloc(this);
         return;
     }

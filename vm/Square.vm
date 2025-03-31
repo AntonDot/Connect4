@@ -1,11 +1,11 @@
-function Ball.new 0
+function Square.new 0
     push constant 6
     call Memory.alloc 1
     pop pointer 0
     push argument 3
-    pop this 5
-    push argument 2
     pop this 4
+    push argument 2
+    pop this 5
     push constant 0
     pop this 2
     push argument 0
@@ -13,24 +13,16 @@ function Ball.new 0
     push argument 1
     pop this 1
     push pointer 0
-    call Ball.show 1
+    call Square.show 1
     pop temp 0
     push pointer 0
     return
-function Ball.getXi 0
+function Square.getXi 0
     push argument 0
     pop pointer 0
     push this 2
     return
-function Ball.dispose 0
-    push argument 0
-    pop pointer 0
-    push pointer 0
-    call Memory.deAlloc 1
-    pop temp 0
-    push constant 0
-    return
-function Ball.show 0
+function Square.show 0
     push argument 0
     pop pointer 0
     push constant 1
@@ -38,13 +30,13 @@ function Ball.show 0
     call Screen.setColor 1
     pop temp 0
     push pointer 0
-    call Ball.draw 1
+    call Square.draw 1
     pop temp 0
-    push this 5
+    push this 4
     push constant 1
     eq
     not
-    if-goto Ball_1
+    if-goto Square_1
     push constant 0
     call Screen.setColor 1
     pop temp 0
@@ -74,23 +66,23 @@ function Ball.show 0
     neg
     call Screen.setColor 1
     pop temp 0
-    goto Ball_0
-label Ball_1
-label Ball_0
+    goto Square_0
+label Square_1
+label Square_0
     push constant 0
     return
-function Ball.hide 0
+function Square.hide 0
     push argument 0
     pop pointer 0
     push constant 0
     call Screen.setColor 1
     pop temp 0
     push pointer 0
-    call Ball.draw 1
+    call Square.draw 1
     pop temp 0
     push constant 0
     return
-function Ball.draw 0
+function Square.draw 0
     push argument 0
     pop pointer 0
     push this 0
@@ -109,14 +101,58 @@ function Ball.draw 0
     pop temp 0
     push constant 0
     return
-function Ball.moveLeft 0
+function Square.move 0
+    push argument 0
+    pop pointer 0
+    push pointer 0
+    call Square.hide 1
+    pop temp 0
+    push argument 1
+    push constant 1
+    eq
+    not
+    if-goto Square_3
+    push pointer 0
+    call Square.moveLeft 1
+    pop temp 0
+    goto Square_2
+label Square_3
+    push argument 1
+    push constant 2
+    eq
+    not
+    if-goto Square_5
+    push pointer 0
+    call Square.moveRight 1
+    pop temp 0
+    goto Square_4
+label Square_5
+    push argument 1
+    push constant 3
+    eq
+    not
+    if-goto Square_7
+    push pointer 0
+    call Square.moveDown 1
+    pop temp 0
+    goto Square_6
+label Square_7
+label Square_6
+label Square_4
+label Square_2
+    push pointer 0
+    call Square.show 1
+    pop temp 0
+    push constant 0
+    return
+function Square.moveLeft 0
     push argument 0
     pop pointer 0
     push this 2
     push constant 0
     gt
     not
-    if-goto Ball_3
+    if-goto Square_9
     push this 2
     push constant 1
     sub
@@ -126,21 +162,21 @@ function Ball.moveLeft 0
     sub
     pop this 0
     push pointer 0
-    call Ball.show 1
+    call Square.show 1
     pop temp 0
-    goto Ball_2
-label Ball_3
-label Ball_2
+    goto Square_8
+label Square_9
+label Square_8
     push constant 0
     return
-function Ball.moveRight 0
+function Square.moveRight 0
     push argument 0
     pop pointer 0
     push this 2
     push constant 6
     lt
     not
-    if-goto Ball_5
+    if-goto Square_11
     push this 2
     push constant 1
     add
@@ -150,25 +186,18 @@ function Ball.moveRight 0
     add
     pop this 0
     push pointer 0
-    call Ball.show 1
+    call Square.show 1
     pop temp 0
-    goto Ball_4
-label Ball_5
-label Ball_4
+    goto Square_10
+label Square_11
+label Square_10
     push constant 0
     return
-function Ball.moveDown 0
+function Square.moveDown 0
     push argument 0
     pop pointer 0
-    push this 4
-    push this 2
-    call ConnectGame.getCountInColumn 2
     push constant 6
-    lt
-    not
-    if-goto Ball_7
-    push constant 6
-    push this 4
+    push this 5
     push this 2
     call ConnectGame.getCountInColumn 2
     sub
@@ -180,54 +209,15 @@ function Ball.moveDown 0
     add
     pop this 1
     push pointer 0
-    call Ball.show 1
+    call Square.show 1
     pop temp 0
-    goto Ball_6
-label Ball_7
-label Ball_6
     push constant 0
     return
-function Ball.move 0
+function Square.dispose 0
     push argument 0
     pop pointer 0
     push pointer 0
-    call Ball.hide 1
-    pop temp 0
-    push argument 1
-    push constant 1
-    eq
-    not
-    if-goto Ball_9
-    push pointer 0
-    call Ball.moveLeft 1
-    pop temp 0
-    goto Ball_8
-label Ball_9
-    push argument 1
-    push constant 2
-    eq
-    not
-    if-goto Ball_11
-    push pointer 0
-    call Ball.moveRight 1
-    pop temp 0
-    goto Ball_10
-label Ball_11
-    push argument 1
-    push constant 3
-    eq
-    not
-    if-goto Ball_13
-    push pointer 0
-    call Ball.moveDown 1
-    pop temp 0
-    goto Ball_12
-label Ball_13
-label Ball_12
-label Ball_10
-label Ball_8
-    push pointer 0
-    call Ball.show 1
+    call Memory.deAlloc 1
     pop temp 0
     push constant 0
     return

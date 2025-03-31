@@ -1,10 +1,39 @@
-class Main {
-    /** Initializes a Connect4 game and starts running it. */
-    function void main() {
+class Main 
+{
+    function void main()
+    {
         var ConnectGame game;
-        let game = ConnectGame.new(); // Correctly initialize the game instance
-        do game.run();               // Start the game
-        do game.dispose();           // Clean up resources
+        var int key;
+        var boolean exit;
+
+        do Output.moveCursor(10, 22);
+        do Output.printString("Press any key to start");
+        while (key = 0) // ожидает нажатия кнопки
+        {
+            let key = Keyboard.keyPressed();               
+        }
+        let exit = false;
+
+        while (~(exit))
+        {
+            let game = ConnectGame.new(); // Инициализация игры
+            do game.run();               // Запуск игры
+            do Output.moveCursor(21, 22);
+            do Output.printString("Press any key to restart");
+            do Output.moveCursor(22, 22);
+            do Output.printString("Press Esc to Exit");
+            let key = 0;
+
+            while (key = 0) // ожидает нажатия кнопки
+            {
+                let key = Keyboard.keyPressed();
+                if (key = 140)
+                {
+                    let exit = true;
+                }
+            }
+            do game.dispose();  // Очистка памяти
+        }
         return;
     }
 }

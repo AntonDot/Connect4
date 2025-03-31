@@ -13,7 +13,7 @@ function ConnectGame.new 0
     pop this 5
     push this 3
     push this 4
-    call TwoDArray.new 2
+    call Board.new 2
     pop this 1
     push constant 0
     pop this 2
@@ -91,9 +91,11 @@ label ConnectGame_3
 label ConnectGame_1
     push constant 0
     return
-function ConnectGame.run 2
+function ConnectGame.run 3
     push argument 0
     pop pointer 0
+    push constant 0
+    pop local 2
     push pointer 0
     call ConnectGame.drawBoard 1
     pop temp 0
@@ -101,29 +103,34 @@ function ConnectGame.run 2
     push constant 5
     push pointer 0
     push constant 0
-    call Ball.new 4
+    call Square.new 4
     pop local 1
 label ConnectGame_4
     push this 5
     not
-    not
-    if-goto ConnectGame_5
-label ConnectGame_6
-    push this 5
-    not
-    not
-    if-goto ConnectGame_7
-label ConnectGame_8
-    push local 0
-    push constant 0
-    eq
-    push this 5
+    push local 2
     not
     and
     not
-    if-goto ConnectGame_9
+    if-goto ConnectGame_5
+label ConnectGame_6
+    push local 0
+    push constant 0
+    eq
+    not
+    if-goto ConnectGame_7
     call Keyboard.keyPressed 0
     pop local 0
+    goto ConnectGame_6
+label ConnectGame_7
+    push local 0
+    push constant 140
+    eq
+    not
+    if-goto ConnectGame_9
+    push constant 1
+    neg
+    pop local 2
     goto ConnectGame_8
 label ConnectGame_9
     push local 0
@@ -133,10 +140,8 @@ label ConnectGame_9
     if-goto ConnectGame_11
     push local 1
     push constant 1
-    call Ball.move 2
+    call Square.move 2
     pop temp 0
-    push constant 0
-    pop local 0
     goto ConnectGame_10
 label ConnectGame_11
     push local 0
@@ -146,51 +151,46 @@ label ConnectGame_11
     if-goto ConnectGame_13
     push local 1
     push constant 2
-    call Ball.move 2
+    call Square.move 2
     pop temp 0
-    push constant 0
-    pop local 0
     goto ConnectGame_12
 label ConnectGame_13
     push local 0
     push constant 133
     eq
-    not
-    if-goto ConnectGame_15
     push local 1
-    push constant 3
-    call Ball.move 2
-    pop temp 0
-    push constant 0
-    pop local 0
-    push local 1
-    call Ball.getXi 1
+    call Square.getXi 1
     push this 0
     add
     pop pointer 1
     push that 0
     push constant 6
     lt
+    and
     not
-    if-goto ConnectGame_17
+    if-goto ConnectGame_15
+    push local 1
+    push constant 3
+    call Square.move 2
+    pop temp 0
     push this 1
     push local 1
-    call Ball.getXi 1
+    call Square.getXi 1
     push local 1
-    call Ball.getXi 1
+    call Square.getXi 1
     push this 0
     add
     pop pointer 1
     push that 0
     push this 2
-    call TwoDArray.set 4
+    call Board.setCell 4
     pop temp 0
     push local 1
-    call Ball.getXi 1
+    call Square.getXi 1
     push this 0
     add
     push local 1
-    call Ball.getXi 1
+    call Square.getXi 1
     push this 0
     add
     pop pointer 1
@@ -201,122 +201,193 @@ label ConnectGame_13
     pop pointer 1
     push temp 0
     pop that 0
-    push this 1
-    call TwoDArray.findWinner 1
-    push constant 2
-    eq
-    not
-    not
-    if-goto ConnectGame_19
-    push constant 1
-    neg
-    pop this 5
-    goto ConnectGame_18
-label ConnectGame_19
-label ConnectGame_18
     push local 1
-    call Ball.dispose 1
+    call Square.dispose 1
     pop temp 0
     push constant 1
     push this 2
     sub
     pop this 2
-    push constant 0
-    push this 0
-    add
-    pop pointer 1
-    push that 0
-    push constant 1
-    push this 0
-    add
-    pop pointer 1
-    push that 0
-    add
-    push constant 2
-    push this 0
-    add
-    pop pointer 1
-    push that 0
-    add
-    push constant 3
-    push this 0
-    add
-    pop pointer 1
-    push that 0
-    add
-    push constant 4
-    push this 0
-    add
-    pop pointer 1
-    push that 0
-    add
-    push constant 5
-    push this 0
-    add
-    pop pointer 1
-    push that 0
-    add
-    push constant 6
-    push this 0
-    add
-    pop pointer 1
-    push that 0
-    add
-    push constant 42
-    eq
-    not
-    if-goto ConnectGame_21
-    push constant 1
-    neg
-    pop this 5
-    goto ConnectGame_20
-label ConnectGame_21
-label ConnectGame_20
     push constant 134
     push constant 5
     push pointer 0
     push this 2
-    call Ball.new 4
+    call Square.new 4
     pop local 1
-    goto ConnectGame_16
-label ConnectGame_17
-label ConnectGame_16
-    goto ConnectGame_14
-label ConnectGame_15
-    push local 0
-    push constant 140
-    eq
-    not
-    if-goto ConnectGame_23
-    push constant 1
-    neg
-    pop this 5
-    push constant 0
-    pop local 0
-    goto ConnectGame_22
-label ConnectGame_23
-label ConnectGame_22
-label ConnectGame_14
-label ConnectGame_12
-label ConnectGame_10
-    push constant 100
-    call Sys.wait 1
-    pop temp 0
-    goto ConnectGame_6
-label ConnectGame_7
-    goto ConnectGame_4
-label ConnectGame_5
-    push this 5
-    not
-    if-goto ConnectGame_25
-    call Screen.clearScreen 0
-    pop temp 0
     push this 1
-    call TwoDArray.findWinner 1
+    call Board.findWinner 1
     push constant 2
     eq
     not
+    not
+    if-goto ConnectGame_17
+    push constant 1
+    neg
+    pop this 5
+    goto ConnectGame_16
+label ConnectGame_17
+label ConnectGame_16
+    push this 5
+    not
+    not
+    if-goto ConnectGame_19
+    push pointer 0
+    call ConnectGame.CheckIfBoardFull 1
+    pop this 5
+    goto ConnectGame_18
+label ConnectGame_19
+label ConnectGame_18
+    goto ConnectGame_14
+label ConnectGame_15
+label ConnectGame_14
+label ConnectGame_12
+label ConnectGame_10
+label ConnectGame_8
+    push constant 0
+    pop local 0
+    push constant 100
+    call Sys.wait 1
+    pop temp 0
+    goto ConnectGame_4
+label ConnectGame_5
+    push local 2
+    not
+    if-goto ConnectGame_21
+    call Screen.clearScreen 0
+    pop temp 0
+    push constant 10
+    push constant 22
+    call Output.moveCursor 2
+    pop temp 0
+    push constant 19
+    call String.new 1
+    push constant 89
+    call String.appendChar 2
+    push constant 111
+    call String.appendChar 2
+    push constant 117
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 101
+    call String.appendChar 2
+    push constant 120
+    call String.appendChar 2
+    push constant 105
+    call String.appendChar 2
+    push constant 116
+    call String.appendChar 2
+    push constant 101
+    call String.appendChar 2
+    push constant 100
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 116
+    call String.appendChar 2
+    push constant 104
+    call String.appendChar 2
+    push constant 101
+    call String.appendChar 2
+    push constant 32
+    call String.appendChar 2
+    push constant 103
+    call String.appendChar 2
+    push constant 97
+    call String.appendChar 2
+    push constant 109
+    call String.appendChar 2
+    push constant 101
+    call String.appendChar 2
+    call Output.printString 1
+    pop temp 0
+label ConnectGame_22
+    push local 0
+    push constant 0
+    eq
+    not
+    if-goto ConnectGame_23
+    call Keyboard.keyPressed 0
+    pop local 0
+    push this 1
+    call Board.dispose 1
+    pop temp 0
+    push constant 0
+    return
+    goto ConnectGame_22
+label ConnectGame_23
+    goto ConnectGame_20
+label ConnectGame_21
+label ConnectGame_20
+    push this 5
+    not
+    if-goto ConnectGame_25
+    push pointer 0
+    call ConnectGame.showResults 1
+    pop temp 0
+    goto ConnectGame_24
+label ConnectGame_25
+label ConnectGame_24
+    push this 1
+    call Board.dispose 1
+    pop temp 0
+    push constant 0
+    return
+function ConnectGame.CheckIfBoardFull 2
+    push argument 0
+    pop pointer 0
+    push constant 0
+    pop local 0
+label ConnectGame_26
+    push local 1
+    push constant 7
+    lt
+    not
     if-goto ConnectGame_27
+    push local 0
+    push local 1
+    push this 0
+    add
+    pop pointer 1
+    push that 0
+    add
+    pop local 0
+    push local 1
+    push constant 1
+    add
+    pop local 1
+    goto ConnectGame_26
+label ConnectGame_27
+    push local 0
+    push constant 42
+    eq
+    not
+    if-goto ConnectGame_29
+    push constant 1
+    neg
+    return
+    goto ConnectGame_28
+label ConnectGame_29
+label ConnectGame_28
+    push constant 0
+    return
+function ConnectGame.showResults 2
+    push argument 0
+    pop pointer 0
+    call Screen.clearScreen 0
+    pop temp 0
+    push this 1
+    call Board.findWinner 1
+    pop local 1
+    push local 1
+    push constant 2
+    eq
+    not
+    if-goto ConnectGame_31
+    push constant 9
+    push constant 27
+    call Output.moveCursor 2
+    pop temp 0
     push constant 11
     call String.new 1
     push constant 73
@@ -369,8 +440,12 @@ label ConnectGame_5
     call String.appendChar 2
     call Output.printString 1
     pop temp 0
-    goto ConnectGame_26
-label ConnectGame_27
+    goto ConnectGame_30
+label ConnectGame_31
+    push constant 9
+    push constant 22
+    call Output.moveCursor 2
+    pop temp 0
     push constant 7
     call String.new 1
     push constant 80
@@ -389,12 +464,11 @@ label ConnectGame_27
     call String.appendChar 2
     call Output.printString 1
     pop temp 0
-    push this 1
-    call TwoDArray.findWinner 1
+    push local 1
     push constant 0
     eq
     not
-    if-goto ConnectGame_29
+    if-goto ConnectGame_33
     push constant 5
     call String.new 1
     push constant 66
@@ -409,8 +483,8 @@ label ConnectGame_27
     call String.appendChar 2
     call Output.printString 1
     pop temp 0
-    goto ConnectGame_28
-label ConnectGame_29
+    goto ConnectGame_32
+label ConnectGame_33
     push constant 5
     call String.new 1
     push constant 87
@@ -425,7 +499,7 @@ label ConnectGame_29
     call String.appendChar 2
     call Output.printString 1
     pop temp 0
-label ConnectGame_28
+label ConnectGame_32
     push constant 5
     call String.new 1
     push constant 32
@@ -440,7 +514,7 @@ label ConnectGame_28
     call String.appendChar 2
     call Output.printString 1
     pop temp 0
-    push constant 10
+    push constant 11
     push constant 27
     call Output.moveCursor 2
     pop temp 0
@@ -466,10 +540,7 @@ label ConnectGame_28
     call String.appendChar 2
     call Output.printString 1
     pop temp 0
-label ConnectGame_26
-    goto ConnectGame_24
-label ConnectGame_25
-label ConnectGame_24
+label ConnectGame_30
     push constant 0
     return
 function ConnectGame.getCountInColumn 0

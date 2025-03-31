@@ -1,0 +1,172 @@
+class Board 
+{
+    field Array mainArray; // Основной массив
+    field int rows, cols; // Количество строк и столбцов
+    constructor Board new(int Arows, int Acols) 
+    {
+        var int x, y;
+
+        let rows = Arows; // Количество строк yi
+        let cols = Acols; // Количество столбцов xi
+        let mainArray = Array.new(cols*rows); // Создаем массив
+
+        while (x < cols) // Заполняем его дефолтным значением 2 (потому что мы так решили)
+        {
+            while (y < rows) 
+            {
+                let mainArray[x*rows + y] = 2;
+                let y = y + 1;
+            }
+            let x = x + 1;
+            let y = 0; // Сбрасываем индекс строки
+        }
+        let x = 0; // Сбрасываем индекс столбца
+
+        return this;
+    }
+
+    method void setCell(int x, int y, int value) 
+    {
+        var int index;
+        let index = x*rows + y;
+        let mainArray[index] = value;
+        return;
+    }
+
+    method int getCell(int x, int y) 
+    {
+        var int index;
+        let index = x*rows + y;
+        return mainArray[index];
+    }
+
+    method int findWinner()
+    {
+        var int x, y, shift;
+        
+        // Проверяем вертикальные линии
+        let x = 0;
+        let y = 0;
+        while (x < cols) 
+        {
+            let shift = 0;
+            while (shift < 3)
+            {
+                if (isSimilar(x, y + shift, x, y + shift + 3) & ~(mainArray[x*rows + y + shift] = 2)) 
+                {               
+                    return mainArray[x*rows+y + shift];
+                }
+                let shift = shift + 1;
+            }
+            let x = x + 1;           
+        }
+        
+        // Проверяем горизонтальные линии
+        let x = 0;
+        let y = 0;
+        while (y < rows) 
+        {
+            let shift = 0;
+            while (shift < 4)
+            {
+                if (isSimilar(x + shift, y, x + 3 + shift, y) & ~(mainArray[(x + shift)*rows + y] = 2))
+                {                
+                    return mainArray[(x + shift)*rows+y];
+                }
+                let shift = shift + 1;
+            }
+            let y = y + 1;            
+        }
+ 
+        // Проверяем диагональные линии
+        let x = 0;
+        let y = 0;
+        while (x < (cols - 3)) 
+        {
+            let y = 0;
+            while (y < (rows - 3)) 
+            {
+                if (isSimilar(x, y, x + 3, y + 3) & ~(mainArray[x*rows + y] = 2)) 
+                {               
+                    return mainArray[x*rows + y];
+                }
+                let y = y + 1;                
+            }
+
+            let y = rows - 1;
+            while (y > 2) 
+            {
+                if (isSimilar(x, y, x + 3, y - 3) & ~(mainArray[x*rows + y] = 2))
+                {                    
+                    return mainArray[x*rows + y];
+                }
+                let y = y - 1;                
+            }
+
+            let x = x + 1;            
+        }
+
+        return 2;
+    }
+
+
+    method boolean isSimilar(int x1, int y1, int x2, int y2) 
+    {
+        // проверка в горизонтали
+        if (y1 = y2) 
+        {
+            while (x1 < x2)
+            {
+                if (~(mainArray[x1*rows + y1] = mainArray[x2*rows + y1]))
+                {
+                    return false;
+                }
+                let x1 = x1 + 1;
+            }
+            return true;
+        }
+        
+        // проверка в вертикали
+        if (x1 = x2)
+        {
+            while (y1 < y2)
+            {
+                if (~(mainArray[x1*rows + y1] = mainArray[x1*rows + y2]))
+                {
+                    return false;
+                }
+                let y1 = y1 + 1;
+            }
+            return true;
+        }
+
+        //проверка в диагоналях
+        while (y1 < y2) 
+        {
+            if (~(mainArray[x1*rows + y1] = mainArray[x2*rows + y2]))
+            {
+                return false;
+            }
+            let x1 = x1 + 1;
+            let y1 = y1 + 1;
+        }
+
+        while (y2 < y1)
+        {
+            if (~(mainArray[x1*rows + y1] = mainArray[x2*rows + y2]))
+            {
+                return false;
+            }
+            let y1 = y1 - 1;
+            let x1 = x1 + 1;
+        }
+
+        return true;
+    }
+
+    method void dispose()
+    {
+        do Memory.deAlloc(this);
+        return;
+    }
+}

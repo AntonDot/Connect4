@@ -1,4 +1,4 @@
-function TwoDArray.new 2
+function Board.new 2
     push constant 3
     call Memory.alloc 1
     pop pointer 0
@@ -11,18 +11,18 @@ function TwoDArray.new 2
     call Math.multiply 2
     call Array.new 1
     pop this 0
-label TwoDArray_0
+label Board_0
     push local 0
     push this 2
     lt
     not
-    if-goto TwoDArray_1
-label TwoDArray_2
+    if-goto Board_1
+label Board_2
     push local 1
     push this 1
     lt
     not
-    if-goto TwoDArray_3
+    if-goto Board_3
     push local 0
     push this 1
     call Math.multiply 2
@@ -39,21 +39,21 @@ label TwoDArray_2
     push constant 1
     add
     pop local 1
-    goto TwoDArray_2
-label TwoDArray_3
+    goto Board_2
+label Board_3
     push local 0
     push constant 1
     add
     pop local 0
     push constant 0
     pop local 1
-    goto TwoDArray_0
-label TwoDArray_1
+    goto Board_0
+label Board_1
     push constant 0
     pop local 0
     push pointer 0
     return
-function TwoDArray.set 1
+function Board.setCell 1
     push argument 0
     pop pointer 0
     push argument 1
@@ -72,7 +72,7 @@ function TwoDArray.set 1
     pop that 0
     push constant 0
     return
-function TwoDArray.get 1
+function Board.getCell 1
     push argument 0
     pop pointer 0
     push argument 1
@@ -87,27 +87,45 @@ function TwoDArray.get 1
     pop pointer 1
     push that 0
     return
-function TwoDArray.findWinner 2
+function Board.findWinner 3
     push argument 0
     pop pointer 0
-label TwoDArray_4
+    push constant 0
+    pop local 0
+    push constant 0
+    pop local 1
+label Board_4
     push local 0
     push this 2
     lt
     not
-    if-goto TwoDArray_5
+    if-goto Board_5
+    push constant 0
+    pop local 2
+label Board_6
+    push local 2
+    push constant 3
+    lt
+    not
+    if-goto Board_7
     push pointer 0
     push local 0
     push local 1
+    push local 2
+    add
     push local 0
     push local 1
+    push local 2
+    add
     push constant 3
     add
-    call TwoDArray.isSimilar 5
+    call Board.isSimilar 5
     push local 0
     push this 1
     call Math.multiply 2
     push local 1
+    add
+    push local 2
     add
     push this 0
     add
@@ -118,174 +136,66 @@ label TwoDArray_4
     not
     and
     not
-    if-goto TwoDArray_7
+    if-goto Board_9
     push local 0
     push this 1
     call Math.multiply 2
     push local 1
+    add
+    push local 2
     add
     push this 0
     add
     pop pointer 1
     push that 0
     return
-    goto TwoDArray_6
-label TwoDArray_7
-label TwoDArray_6
-    push pointer 0
-    push local 0
-    push local 1
+    goto Board_8
+label Board_9
+label Board_8
+    push local 2
     push constant 1
     add
-    push local 0
-    push local 1
-    push constant 1
-    add
-    push constant 3
-    add
-    call TwoDArray.isSimilar 5
-    push local 0
-    push this 1
-    call Math.multiply 2
-    push local 1
-    add
-    push constant 1
-    add
-    push this 0
-    add
-    pop pointer 1
-    push that 0
-    push constant 2
-    eq
-    not
-    and
-    not
-    if-goto TwoDArray_9
-    push local 0
-    push this 1
-    call Math.multiply 2
-    push local 1
-    add
-    push constant 1
-    add
-    push this 0
-    add
-    pop pointer 1
-    push that 0
-    return
-    goto TwoDArray_8
-label TwoDArray_9
-label TwoDArray_8
-    push pointer 0
-    push local 0
-    push local 1
-    push constant 2
-    add
-    push local 0
-    push local 1
-    push constant 2
-    add
-    push constant 3
-    add
-    call TwoDArray.isSimilar 5
-    push local 0
-    push this 1
-    call Math.multiply 2
-    push local 1
-    add
-    push constant 2
-    add
-    push this 0
-    add
-    pop pointer 1
-    push that 0
-    push constant 2
-    eq
-    not
-    and
-    not
-    if-goto TwoDArray_11
-    push local 0
-    push this 1
-    call Math.multiply 2
-    push local 1
-    add
-    push constant 2
-    add
-    push this 0
-    add
-    pop pointer 1
-    push that 0
-    return
-    goto TwoDArray_10
-label TwoDArray_11
-label TwoDArray_10
+    pop local 2
+    goto Board_6
+label Board_7
     push local 0
     push constant 1
     add
     pop local 0
-    goto TwoDArray_4
-label TwoDArray_5
+    goto Board_4
+label Board_5
     push constant 0
     pop local 0
     push constant 0
     pop local 1
-label TwoDArray_12
+label Board_10
     push local 1
     push this 1
     lt
     not
-    if-goto TwoDArray_13
+    if-goto Board_11
+    push constant 0
+    pop local 2
+label Board_12
+    push local 2
+    push constant 4
+    lt
+    not
+    if-goto Board_13
     push pointer 0
     push local 0
+    push local 2
+    add
     push local 1
     push local 0
     push constant 3
     add
-    push local 1
-    call TwoDArray.isSimilar 5
-    push local 0
-    push this 1
-    call Math.multiply 2
-    push local 1
-    add
-    push this 0
-    add
-    pop pointer 1
-    push that 0
-    push constant 2
-    eq
-    not
-    and
-    not
-    if-goto TwoDArray_15
-    push local 0
-    push this 1
-    call Math.multiply 2
-    push local 1
-    add
-    push this 0
-    add
-    pop pointer 1
-    push that 0
-    return
-    goto TwoDArray_14
-label TwoDArray_15
-label TwoDArray_14
-    push pointer 0
-    push local 0
-    push constant 1
+    push local 2
     add
     push local 1
+    call Board.isSimilar 5
     push local 0
-    push constant 1
-    add
-    push constant 3
-    add
-    push local 1
-    call TwoDArray.isSimilar 5
-    push local 0
-    push constant 1
+    push local 2
     add
     push this 1
     call Math.multiply 2
@@ -300,136 +210,56 @@ label TwoDArray_14
     not
     and
     not
-    if-goto TwoDArray_17
+    if-goto Board_15
     push local 0
+    push local 2
+    add
+    push this 1
+    call Math.multiply 2
+    push local 1
+    add
+    push this 0
+    add
+    pop pointer 1
+    push that 0
+    return
+    goto Board_14
+label Board_15
+label Board_14
+    push local 2
     push constant 1
     add
-    push this 1
-    call Math.multiply 2
-    push local 1
-    add
-    push this 0
-    add
-    pop pointer 1
-    push that 0
-    return
-    goto TwoDArray_16
-label TwoDArray_17
-label TwoDArray_16
-    push pointer 0
-    push local 0
-    push constant 2
-    add
-    push local 1
-    push local 0
-    push constant 2
-    add
-    push constant 3
-    add
-    push local 1
-    call TwoDArray.isSimilar 5
-    push local 0
-    push constant 2
-    add
-    push this 1
-    call Math.multiply 2
-    push local 1
-    add
-    push this 0
-    add
-    pop pointer 1
-    push that 0
-    push constant 2
-    eq
-    not
-    and
-    not
-    if-goto TwoDArray_19
-    push local 0
-    push constant 2
-    add
-    push this 1
-    call Math.multiply 2
-    push local 1
-    add
-    push this 0
-    add
-    pop pointer 1
-    push that 0
-    return
-    goto TwoDArray_18
-label TwoDArray_19
-label TwoDArray_18
-    push pointer 0
-    push local 0
-    push constant 3
-    add
-    push local 1
-    push local 0
-    push constant 3
-    add
-    push constant 3
-    add
-    push local 1
-    call TwoDArray.isSimilar 5
-    push local 0
-    push constant 3
-    add
-    push this 1
-    call Math.multiply 2
-    push local 1
-    add
-    push this 0
-    add
-    pop pointer 1
-    push that 0
-    push constant 2
-    eq
-    not
-    and
-    not
-    if-goto TwoDArray_21
-    push local 0
-    push constant 3
-    add
-    push this 1
-    call Math.multiply 2
-    push local 1
-    add
-    push this 0
-    add
-    pop pointer 1
-    push that 0
-    return
-    goto TwoDArray_20
-label TwoDArray_21
-label TwoDArray_20
+    pop local 2
+    goto Board_12
+label Board_13
     push local 1
     push constant 1
     add
     pop local 1
-    goto TwoDArray_12
-label TwoDArray_13
+    goto Board_10
+label Board_11
     push constant 0
     pop local 0
     push constant 0
     pop local 1
-label TwoDArray_22
+label Board_16
     push local 0
     push this 2
     push constant 3
     sub
     lt
     not
-    if-goto TwoDArray_23
-label TwoDArray_24
+    if-goto Board_17
+    push constant 0
+    pop local 1
+label Board_18
     push local 1
     push this 1
     push constant 3
     sub
     lt
     not
-    if-goto TwoDArray_25
+    if-goto Board_19
     push pointer 0
     push local 0
     push local 1
@@ -439,7 +269,7 @@ label TwoDArray_24
     push local 1
     push constant 3
     add
-    call TwoDArray.isSimilar 5
+    call Board.isSimilar 5
     push local 0
     push this 1
     call Math.multiply 2
@@ -454,7 +284,7 @@ label TwoDArray_24
     not
     and
     not
-    if-goto TwoDArray_27
+    if-goto Board_21
     push local 0
     push this 1
     call Math.multiply 2
@@ -465,43 +295,25 @@ label TwoDArray_24
     pop pointer 1
     push that 0
     return
-    goto TwoDArray_26
-label TwoDArray_27
-label TwoDArray_26
+    goto Board_20
+label Board_21
+label Board_20
     push local 1
     push constant 1
     add
     pop local 1
-    goto TwoDArray_24
-label TwoDArray_25
-    push constant 0
-    pop local 1
-    push local 0
-    push constant 1
-    add
-    pop local 0
-    goto TwoDArray_22
-label TwoDArray_23
-    push constant 0
-    pop local 0
+    goto Board_18
+label Board_19
     push this 1
     push constant 1
     sub
     pop local 1
-label TwoDArray_28
-    push local 0
-    push this 2
-    push constant 3
-    sub
-    lt
-    not
-    if-goto TwoDArray_29
-label TwoDArray_30
+label Board_22
     push local 1
     push constant 2
     gt
     not
-    if-goto TwoDArray_31
+    if-goto Board_23
     push pointer 0
     push local 0
     push local 1
@@ -511,7 +323,7 @@ label TwoDArray_30
     push local 1
     push constant 3
     sub
-    call TwoDArray.isSimilar 5
+    call Board.isSimilar 5
     push local 0
     push this 1
     call Math.multiply 2
@@ -526,7 +338,7 @@ label TwoDArray_30
     not
     and
     not
-    if-goto TwoDArray_33
+    if-goto Board_25
     push local 0
     push this 1
     call Math.multiply 2
@@ -537,41 +349,37 @@ label TwoDArray_30
     pop pointer 1
     push that 0
     return
-    goto TwoDArray_32
-label TwoDArray_33
-label TwoDArray_32
+    goto Board_24
+label Board_25
+label Board_24
     push local 1
     push constant 1
     sub
     pop local 1
-    goto TwoDArray_30
-label TwoDArray_31
-    push this 1
-    push constant 1
-    sub
-    pop local 1
+    goto Board_22
+label Board_23
     push local 0
     push constant 1
     add
     pop local 0
-    goto TwoDArray_28
-label TwoDArray_29
+    goto Board_16
+label Board_17
     push constant 2
     return
-function TwoDArray.isSimilar 0
+function Board.isSimilar 0
     push argument 0
     pop pointer 0
     push argument 2
     push argument 4
     eq
     not
-    if-goto TwoDArray_35
-label TwoDArray_36
+    if-goto Board_27
+label Board_28
     push argument 1
     push argument 3
     lt
     not
-    if-goto TwoDArray_37
+    if-goto Board_29
     push argument 1
     push this 1
     call Math.multiply 2
@@ -593,35 +401,35 @@ label TwoDArray_36
     eq
     not
     not
-    if-goto TwoDArray_39
+    if-goto Board_31
     push constant 0
     return
-    goto TwoDArray_38
-label TwoDArray_39
-label TwoDArray_38
+    goto Board_30
+label Board_31
+label Board_30
     push argument 1
     push constant 1
     add
     pop argument 1
-    goto TwoDArray_36
-label TwoDArray_37
+    goto Board_28
+label Board_29
     push constant 1
     neg
     return
-    goto TwoDArray_34
-label TwoDArray_35
-label TwoDArray_34
+    goto Board_26
+label Board_27
+label Board_26
     push argument 1
     push argument 3
     eq
     not
-    if-goto TwoDArray_41
-label TwoDArray_42
+    if-goto Board_33
+label Board_34
     push argument 2
     push argument 4
     lt
     not
-    if-goto TwoDArray_43
+    if-goto Board_35
     push argument 1
     push this 1
     call Math.multiply 2
@@ -643,30 +451,30 @@ label TwoDArray_42
     eq
     not
     not
-    if-goto TwoDArray_45
+    if-goto Board_37
     push constant 0
     return
-    goto TwoDArray_44
-label TwoDArray_45
-label TwoDArray_44
+    goto Board_36
+label Board_37
+label Board_36
     push argument 2
     push constant 1
     add
     pop argument 2
-    goto TwoDArray_42
-label TwoDArray_43
+    goto Board_34
+label Board_35
     push constant 1
     neg
     return
-    goto TwoDArray_40
-label TwoDArray_41
-label TwoDArray_40
-label TwoDArray_46
+    goto Board_32
+label Board_33
+label Board_32
+label Board_38
     push argument 2
     push argument 4
     lt
     not
-    if-goto TwoDArray_47
+    if-goto Board_39
     push argument 1
     push this 1
     call Math.multiply 2
@@ -688,28 +496,28 @@ label TwoDArray_46
     eq
     not
     not
-    if-goto TwoDArray_49
+    if-goto Board_41
     push constant 0
     return
-    goto TwoDArray_48
-label TwoDArray_49
-label TwoDArray_48
-    push argument 2
-    push constant 1
-    add
-    pop argument 2
+    goto Board_40
+label Board_41
+label Board_40
     push argument 1
     push constant 1
     add
     pop argument 1
-    goto TwoDArray_46
-label TwoDArray_47
-label TwoDArray_50
+    push argument 2
+    push constant 1
+    add
+    pop argument 2
+    goto Board_38
+label Board_39
+label Board_42
     push argument 4
     push argument 2
     lt
     not
-    if-goto TwoDArray_51
+    if-goto Board_43
     push argument 1
     push this 1
     call Math.multiply 2
@@ -731,12 +539,12 @@ label TwoDArray_50
     eq
     not
     not
-    if-goto TwoDArray_53
+    if-goto Board_45
     push constant 0
     return
-    goto TwoDArray_52
-label TwoDArray_53
-label TwoDArray_52
+    goto Board_44
+label Board_45
+label Board_44
     push argument 2
     push constant 1
     sub
@@ -745,8 +553,16 @@ label TwoDArray_52
     push constant 1
     add
     pop argument 1
-    goto TwoDArray_50
-label TwoDArray_51
+    goto Board_42
+label Board_43
     push constant 1
     neg
+    return
+function Board.dispose 0
+    push argument 0
+    pop pointer 0
+    push pointer 0
+    call Memory.deAlloc 1
+    pop temp 0
+    push constant 0
     return
