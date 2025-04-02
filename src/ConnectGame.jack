@@ -3,18 +3,18 @@ class ConnectGame {
     field Board board;   // Игровое поле
     field int currentPlayer; // Текущий игрок (0 = черный, 1 = белый)
     field int rows, cols;    // Размеры поля (6x7)
-    field boolean exit;    // Флаг выхода из игры
+    field boolean exitFlag;    // Флаг выхода из игры
 
     constructor ConnectGame new()
     {
         let rows = 6;        // 6 рядов
         let cols = 7;        // 7 столбцов
         let columnsCount = Array.new(cols); // Массив для хранения количества шаров в каждом столбце
-        let exit = false;    // Флаг выхода из игры
+        let exitFlag = false;    
         let board = Board.new(rows, cols); // Создаем двумерный массив для хранения игрового поля
         // Поле нужно для проверки на выигрыш
         let currentPlayer = 0; // Черный игрок начинает
-        do Screen.clearScreen(); // Очищаем экран
+        do Screen.clearScreen(); 
         return this;
     }
 
@@ -25,13 +25,13 @@ class ConnectGame {
         do Screen.setColor(true);  // Цвет фона (чёрный)
         // Нарисуем черный прямоугольник. 
         //поверх него будем отрисовывать белые квадраты - клетки, чтобы в итоге получилась "сетка"
-        do Screen.drawRectangle(129, 35,  379, 250);
+        do Screen.drawRectangle(129, 36, 379, 250);
 
         let y = 40;  // Начальная вертикальная позиция (по Y)
         let xi = 0;  // Индекс клетки по горизонтали
         let yi = 0;  // Индекс клетки по вертикали
-        // Пройдем по всем строкам
-        while (yi < 6) 
+        
+        while (yi < 6) // Пройдем по всем строкам
         {  
             let x = 134;  // Начальная горизонтальная позиция (по X)
 
@@ -53,13 +53,13 @@ class ConnectGame {
     {
         var char key;    // Клавиша, нажатая игроком
         var Square square;
-        var boolean escape;
+        var boolean escapeFlag;
 
-        let escape = false;
+        let escapeFlag = false;
         do drawBoard();  // Рисуем игровое поле
         let square = Square.new(134, 5, this, 0); // первым рисуем черный квадрат над доской
 
-        while (~exit & (~escape)) 
+        while (~exitFlag & (~escapeFlag)) 
         {    
             while (key = 0) // ожидает нажатия кнопки
             {
@@ -68,55 +68,47 @@ class ConnectGame {
 
             if (key = 140) // esc - выход
             {
-                let escape = true;
+                let escapeFlag = true;
             }
-            else
+            // в метод move передается соответствующее direction (1, 2, 3)
+            if (key = 130) // стрелка влево
+            { 
+                do square.move(1);
+            }
+            if (key = 132) // стрелка вправо
+            { 
+                do square.move(2);
+            }
+            // стрелка вниз и если в текущем столбце есть свободное место
+            if ((key = 133) & (columnsCount[square.getXi()] < 6))
             {
-                // в метод move передается соответствующее direction (1, 2, 3)
-                if (key = 130) // стрелка влево
-                { 
-                    do square.move(1);
+                do square.move(3);
+                // устанавливает на текущем месте номер текущего игрока на доске
+                do board.setCell(square.getXi(), columnsCount[square.getXi()], currentPlayer);
+                // Увеличиваем кол-во квадратов в столбце
+                let columnsCount[square.getXi()] = columnsCount[square.getXi()] + 1;
+                //забываем про текущий квадрат, т.к. он нам больше не нужен
+                do square.dispose(); 
+                // Создаем новый квадрат для следующего игрока
+                let currentPlayer = 1 - currentPlayer;
+                let square = Square.new(134, 5, this, currentPlayer);
+
+                if (~(board.findWinner() = 2)) // если есть победитель, т.е. вернулось не дефолтное значение(2)
+                {
+                    let exitFlag = true;
                 }
-                else
+
+                if (~(exitFlag))
                 { 
-                    if (key = 132) // стрелка вправо
-                    { 
-                        do square.move(2);
-                    }
-                    else
-                    {
-                        // стрелка вниз и если в текущем столбце есть свободное место
-                        if ((key = 133) & (columnsCount[square.getXi()] < 6))
-                        {
-                            do square.move(3);
-                            // устанавливает на текущем месте номер текущего игрока на доске
-                            do board.setCell(square.getXi(), columnsCount[square.getXi()], currentPlayer);
-                            // Увеличиваем кол-во квадратов в столбце
-                            let columnsCount[square.getXi()] = columnsCount[square.getXi()] + 1;
-                            //забываем про текущий квадрат, т.к. он нам больше не нужен
-                            do square.dispose(); 
-                            // Создаем новый квадрат для следующего игрока
-                            let currentPlayer = 1 - currentPlayer;
-                            let square = Square.new(134, 5, this, currentPlayer);
-
-                            if (~(board.findWinner() = 2)) // если есть победитель, т.е. вернулось не дефолтное значение(2)
-                            {
-                                let exit = true;
-                            }
-
-                            if (~(exit))
-                            { 
-                                let exit = CheckIfBoardFull();
-                            }
-                        }
-                    }
+                    let exitFlag = isBoardFull();
                 }
             }
+                
             let key = 0;
-            do Sys.wait(100);
+            do Sys.wait(200);
         }
 
-        if (escape)
+        if (escapeFlag)
         {
             do Screen.clearScreen();
             do Output.moveCursor(10, 22);
@@ -130,7 +122,7 @@ class ConnectGame {
                 return;
             }
         }
-	    if (exit) 
+	    if (exitFlag) 
         {
             do showResults();
         }  
@@ -138,7 +130,7 @@ class ConnectGame {
         return;
     }
 
-    method boolean CheckIfBoardFull()
+    method boolean isBoardFull()
     {
         var int sum, index;
         let sum = 0;

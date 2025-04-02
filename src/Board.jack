@@ -14,7 +14,7 @@ class Board
         {
             while (y < rows) 
             {
-                let mainArray[x*rows + y] = 2;
+                let mainArray[x * rows + y] = 2;
                 let y = y + 1;
             }
             let x = x + 1;
@@ -28,7 +28,7 @@ class Board
     method void setCell(int x, int y, int value) 
     {
         var int index;
-        let index = x*rows + y;
+        let index = x * rows + y;
         let mainArray[index] = value;
         return;
     }
@@ -36,11 +36,36 @@ class Board
     method int getCell(int x, int y) 
     {
         var int index;
-        let index = x*rows + y;
+        let index = x * rows + y;
         return mainArray[index];
     }
 
     method int findWinner()
+    {
+        var int winner;
+
+        let winner = checkVerticalWin();
+        if (~(winner = 2)) 
+        {
+            return winner; 
+        }
+
+        let winner = checkHorizontalWin();
+        if (~(winner = 2)) 
+        { 
+            return winner; 
+        }
+
+        let winner = checkDiagonalWin();
+        if (~(winner = 2)) 
+        { 
+            return winner; 
+        }
+
+        return 2;
+    }
+
+    method int checkVerticalWin()
     {
         var int x, y, shift;
         
@@ -50,16 +75,22 @@ class Board
         while (x < cols) 
         {
             let shift = 0;
-            while (shift < 3)
+            while (shift < 4)
             {
-                if (isSimilar(x, y + shift, x, y + shift + 3) & ~(mainArray[x*rows + y + shift] = 2)) 
-                {               
-                    return mainArray[x*rows+y + shift];
+                if (isSimilar(x, y + shift, x, y + 3 + shift) & ~(mainArray[x * rows + (y + shift)] = 2))
+                {                
+                    return mainArray[x * rows + (y + shift)];
                 }
                 let shift = shift + 1;
             }
-            let x = x + 1;           
+            let x = x + 1;            
         }
+        return 2;
+    }
+
+    method int checkHorizontalWin()
+    {
+        var int x, y, shift;
         
         // Проверяем горизонтальные линии
         let x = 0;
@@ -71,13 +102,19 @@ class Board
             {
                 if (isSimilar(x + shift, y, x + 3 + shift, y) & ~(mainArray[(x + shift)*rows + y] = 2))
                 {                
-                    return mainArray[(x + shift)*rows+y];
+                    return mainArray[(x + shift) * rows + y];
                 }
                 let shift = shift + 1;
             }
             let y = y + 1;            
         }
- 
+        return 2;
+    }
+
+    method int checkDiagonalWin()
+    {
+        var int x, y, shift;
+        
         // Проверяем диагональные линии
         let x = 0;
         let y = 0;
@@ -88,7 +125,7 @@ class Board
             {
                 if (isSimilar(x, y, x + 3, y + 3) & ~(mainArray[x*rows + y] = 2)) 
                 {               
-                    return mainArray[x*rows + y];
+                    return mainArray[x * rows + y];
                 }
                 let y = y + 1;                
             }
@@ -96,54 +133,74 @@ class Board
             let y = rows - 1;
             while (y > 2) 
             {
-                if (isSimilar(x, y, x + 3, y - 3) & ~(mainArray[x*rows + y] = 2))
+                if (isSimilar(x, y, x + 3, y - 3) & ~(mainArray[x * rows + y] = 2))
                 {                    
-                    return mainArray[x*rows + y];
+                    return mainArray[x * rows + y];
                 }
                 let y = y - 1;                
             }
 
             let x = x + 1;            
         }
-
         return 2;
     }
 
-
     method boolean isSimilar(int x1, int y1, int x2, int y2) 
     {
-        // проверка в горизонтали
+        var boolean diagonalFlag;
         if (y1 = y2) 
-        {
-            while (x1 < x2)
-            {
-                if (~(mainArray[x1*rows + y1] = mainArray[x2*rows + y1]))
-                {
-                    return false;
-                }
-                let x1 = x1 + 1;
-            }
-            return true;
+        { 
+            return isHorizontalSimilar(x1, y1, x2, y2); 
         }
         
-        // проверка в вертикали
-        if (x1 = x2)
-        {
-            while (y1 < y2)
-            {
-                if (~(mainArray[x1*rows + y1] = mainArray[x1*rows + y2]))
-                {
-                    return false;
-                }
-                let y1 = y1 + 1;
-            }
-            return true;
+        if (x1 = x2) 
+        { 
+            return isVerticalSimilar(x1, y1, x2, y2); 
         }
 
+        let diagonalFlag = isDiagonalSimilar(x1, y1, x2, y2);
+        if (diagonalFlag) 
+        { 
+            return diagonalFlag; 
+        }
+
+        return false;
+    }
+
+    method boolean isVerticalSimilar(int x1, int y1, int x2, int y2) 
+    {
+        // проверка в вертикали
+        while (y1 < y2)
+        {
+            if (~(mainArray[x1 * rows + y1] = mainArray[x1 * rows + y2]))
+            {
+                return false;
+            }
+            let y1 = y1 + 1;
+        }
+        return true;
+    }
+
+    method boolean isHorizontalSimilar(int x1, int y1, int x2, int y2) 
+    {
+        // проверка в горизонтали
+        while (x1 < x2)
+        {
+            if (~(mainArray[x1 * rows + y1] = mainArray[x2 * rows + y1]))
+            {
+                return false;
+            }
+            let x1 = x1 + 1;
+        }
+        return true;
+    }
+
+    method boolean isDiagonalSimilar(int x1, int y1, int x2, int y2) 
+    {
         //проверка в диагоналях
         while (y1 < y2) 
         {
-            if (~(mainArray[x1*rows + y1] = mainArray[x2*rows + y2]))
+            if (~(mainArray[x1 * rows + y1] = mainArray[x2 * rows + y2]))
             {
                 return false;
             }
@@ -153,7 +210,7 @@ class Board
 
         while (y2 < y1)
         {
-            if (~(mainArray[x1*rows + y1] = mainArray[x2*rows + y2]))
+            if (~(mainArray[x1 * rows + y1] = mainArray[x2 * rows + y2]))
             {
                 return false;
             }

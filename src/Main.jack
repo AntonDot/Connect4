@@ -4,7 +4,7 @@ class Main
     {
         var ConnectGame game;
         var int key;
-        var boolean exit;
+        var boolean exitFlag;
 
         do Output.moveCursor(10, 22);
         do Output.printString("Press any key to start");
@@ -12,9 +12,9 @@ class Main
         {
             let key = Keyboard.keyPressed();               
         }
-        let exit = false;
+        let exitFlag = false;
 
-        while (~(exit))
+        while (~(exitFlag))
         {
             let game = ConnectGame.new(); // Инициализация игры
             do game.run();               // Запуск игры
@@ -29,7 +29,7 @@ class Main
                 let key = Keyboard.keyPressed();
                 if (key = 140)
                 {
-                    let exit = true;
+                    let exitFlag = true;
                 }
             }
             do game.dispose();  // Очистка памяти
